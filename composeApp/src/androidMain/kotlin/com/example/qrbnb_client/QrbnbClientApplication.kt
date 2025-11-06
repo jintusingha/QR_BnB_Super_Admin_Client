@@ -1,6 +1,7 @@
 package com.example.qrbnb_client
 
 import android.app.Application
+import com.example.qrbnb_client.di.VerifyOtpModule
 import com.example.qrbnb_client.di.networkModule
 import com.example.qrbnb_client.di.otpModule
 import io.ktor.http.ContentType
@@ -16,7 +17,7 @@ class QrbnbClientApplication : Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@QrbnbClientApplication)
-            modules(networkModule,otpModule)
+            modules(networkModule,otpModule, VerifyOtpModule)
         }
     }
 }

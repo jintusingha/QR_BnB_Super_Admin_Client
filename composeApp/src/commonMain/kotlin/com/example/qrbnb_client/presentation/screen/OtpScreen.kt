@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,7 @@ import org.koin.compose.koinInject
 fun OtpScreen(
     viewModel: OtpViewModel = koinInject(),
     onBack: () -> Unit = {},
+    onOtpSentSuccess: (String) -> Unit = {},
 ) {
     val uiState by viewModel.otpUiState.collectAsState()
     var phoneNumber by remember { mutableStateOf("") }
@@ -90,18 +92,26 @@ fun OtpScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             when (val state = uiState) {
                 is OtpUiState.Error ->
                     Text(
                         text = state.message,
-
                         color = MaterialTheme.colorScheme.error,
                     )
-                is OtpUiState.Success ->
+
+                is OtpUiState.Success -> {
+                    LaunchedEffect(key1 = state) {
+                        onOtpSentSuccess(phoneNumber)
+                    }
+
                     Text(
                         text = state.data.message,
                         color = Color(0xFF00C853),
                     )
+                }
+
                 else -> {}
             }
         }

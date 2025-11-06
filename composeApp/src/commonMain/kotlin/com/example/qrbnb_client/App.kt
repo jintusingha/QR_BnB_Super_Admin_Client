@@ -1,5 +1,6 @@
 package com.example.qrbnb_client
 
+import AppNavHost
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+
 import com.example.qrbnb_client.presentation.screen.OtpScreen
 
 import org.jetbrains.compose.resources.painterResource
@@ -25,7 +28,9 @@ import qr_bnb_client.composeapp.generated.resources.compose_multiplatform
 @Preview
 fun App() {
     MaterialTheme {
-        OtpScreen()
+//        OtpScreen()
+        val navController = rememberNavController()
+        AppNavHost(navController)
 
 
 
