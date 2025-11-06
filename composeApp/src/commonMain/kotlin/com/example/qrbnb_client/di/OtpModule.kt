@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val otpModule=module{
     single<OtpDataSource>{
-        OtpDataSourceImpl(httpClient = get(), baseUrl = get(named("BASE_URL")))
+        OtpDataSourceImpl(httpClient = get(PRE_LOGIN_CLIENT), baseUrl = get(named("BASE_URL")))
     }
     single<OtpRepository>{
         OtpRepositoryImpl(dataSource = get())

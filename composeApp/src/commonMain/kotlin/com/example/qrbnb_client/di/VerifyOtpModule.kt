@@ -1,5 +1,6 @@
 package com.example.qrbnb_client.di
 
+import com.example.qrbnb_client.data.TokenStorage
 import com.example.qrbnb_client.data.remote.service.verifyOtpRemoteDataSource.VerifyOtpRemoteDataSource
 import com.example.qrbnb_client.data.remote.service.verifyOtpRemoteDataSource.VerifyOtpRemoteDataSourceImpl
 import com.example.qrbnb_client.data.repository.VerifyOtpRepositoryImpl
@@ -10,8 +11,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val VerifyOtpModule= module {
-    single<VerifyOtpRemoteDataSource>{ VerifyOtpRemoteDataSourceImpl(get(),get(named("BASE_URL"))) }
+
+    single<VerifyOtpRemoteDataSource>{ VerifyOtpRemoteDataSourceImpl(get(PRE_LOGIN_CLIENT),get(named("BASE_URL"))) }
     single<VerifyOtpRepository>{ VerifyOtpRepositoryImpl(get()) }
-    factory { VerifyOtpUseCase(get()) }
+    factory { VerifyOtpUseCase(get(),get()) }
     factory{ VerifyOtpViewModel(get()) }
 }
