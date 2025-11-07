@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.qrbnb_client.navigation.ScreenRoute
+import com.example.qrbnb_client.presentation.screen.ClientDashboardScreen.ClientDashboardScreen
 import com.example.qrbnb_client.presentation.screen.OtpScreen
 import com.example.qrbnb_client.presentation.screen.OtpVerificationScreen
 
@@ -35,7 +36,14 @@ fun AppNavHost(navController: NavHostController) {
 
             val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
 
-            OtpVerificationScreen(phoneNumber = phoneNumber, onNavigateBack = {navController.popBackStack()})
+            OtpVerificationScreen(phoneNumber = phoneNumber, onNavigateBack = {navController.popBackStack()}, onVerificationSuccess = {
+                navController.navigate(ScreenRoute.ClientDashboard.route){
+                    popUpTo(ScreenRoute.Login.route){inclusive=true}
+                }
+            })
+        }
+        composable(ScreenRoute.ClientDashboard.route){
+            ClientDashboardScreen()
         }
     }
 }

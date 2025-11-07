@@ -1,5 +1,6 @@
 package com.example.qrbnb_client.presentation.screen
 
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -9,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImagePainter.State.Empty.painter
@@ -32,6 +34,7 @@ fun OtpVerificationScreen(
     phoneNumber: String,
     viewModel: VerifyOtpViewModel = koinInject(),
     onNavigateBack: () -> Unit,
+    onVerificationSuccess:()->Unit
 ) {
     var otp by remember { mutableStateOf("") }
 
@@ -106,6 +109,7 @@ fun OtpVerificationScreen(
                         color = Color(0xFF2E7D32),
                         style = MaterialTheme.typography.bodyMedium,
                     )
+                    onVerificationSuccess()
                 }
 
                 is VerifyOtpUiState.Error -> {

@@ -12,4 +12,5 @@ sealed class ScreenRoute(
             const val ROUTE_WITH_ARGS = "verifyOtp/{phoneNumber}"
         }
     }
+    object ClientDashboard:ScreenRoute("client_dashboard_route")
 }
