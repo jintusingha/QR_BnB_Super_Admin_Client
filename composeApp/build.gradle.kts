@@ -36,6 +36,7 @@ kotlin {
             implementation("io.ktor:ktor-client-android:3.0.1")
         }
         commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
