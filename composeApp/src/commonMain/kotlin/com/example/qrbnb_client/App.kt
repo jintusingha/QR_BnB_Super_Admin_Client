@@ -3,6 +3,7 @@ package com.example.qrbnb_client
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
+import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
 
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 
@@ -17,7 +18,8 @@ fun App() {
 //        AppNavHost(navController)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
-        AddCategoryScreen()
+//        AddCategoryScreen()
+        ManageCategoryDetailScreen(categoryId = "")
 
 
 

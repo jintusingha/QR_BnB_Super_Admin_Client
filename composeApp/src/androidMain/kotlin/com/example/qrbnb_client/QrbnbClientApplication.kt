@@ -3,6 +3,7 @@ package com.example.qrbnb_client
 import android.app.Application
 import com.example.qrbnb_client.di.AddCategoryModule
 import com.example.qrbnb_client.di.ClientDashboardModule
+import com.example.qrbnb_client.di.ManageCategoryDetailsModule
 import com.example.qrbnb_client.di.ManageCategoryModule
 import com.example.qrbnb_client.di.TokenModule
 import com.example.qrbnb_client.di.VerifyOtpModule
@@ -22,7 +23,7 @@ class QrbnbClientApplication : Application() {
             androidLogger(Level.ERROR)
             androidContext(this@QrbnbClientApplication)
             modules(networkModule,otpModule, VerifyOtpModule, TokenModule, ClientDashboardModule,
-                ManageCategoryModule, AddCategoryModule
+                ManageCategoryModule, AddCategoryModule, ManageCategoryDetailsModule
             )
         }
     }
