@@ -3,17 +3,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.qrbnb_client.navigation.AuthStatusChecker
 import com.example.qrbnb_client.navigation.ScreenRoute
-import com.example.qrbnb_client.presentation.screen.ClientDashboardScreen.ClientDashboardScreen
 import com.example.qrbnb_client.presentation.screen.OtpScreen
 import com.example.qrbnb_client.presentation.screen.OtpVerificationScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController) {
+fun AppNavHost(authStatusChecker: AuthStatusChecker) {
+    val initialRoute = authStatusChecker.getStartDestination()
+    val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = ScreenRoute.Login.route,
+        startDestination = initialRoute,
     ) {
         composable(ScreenRoute.Login.route) {
             OtpScreen(
@@ -36,13 +39,13 @@ fun AppNavHost(navController: NavHostController) {
 
             val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
 
-            OtpVerificationScreen(phoneNumber = phoneNumber, onNavigateBack = {navController.popBackStack()}, onVerificationSuccess = {
-                navController.navigate(ScreenRoute.ClientDashboard.route){
-                    popUpTo(ScreenRoute.Login.route){inclusive=true}
+            OtpVerificationScreen(phoneNumber = phoneNumber, onNavigateBack = { navController.popBackStack() }, onVerificationSuccess = {
+                navController.navigate(ScreenRoute.ClientDashboard.route) {
+                    popUpTo(ScreenRoute.Login.route) { inclusive = true }
                 }
             })
         }
-        composable(ScreenRoute.ClientDashboard.route){
+        composable(ScreenRoute.ClientDashboard.route) {
             ClientDashboardScreen()
         }
     }

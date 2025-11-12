@@ -2,6 +2,7 @@ package com.example.qrbnb_client
 
 import android.app.Application
 import com.example.qrbnb_client.di.AddCategoryModule
+import com.example.qrbnb_client.di.AuthStatusChecker
 import com.example.qrbnb_client.di.ClientDashboardModule
 import com.example.qrbnb_client.di.ManageCategoryDetailsModule
 import com.example.qrbnb_client.di.ManageCategoryModule
@@ -25,7 +26,7 @@ class QrbnbClientApplication : Application() {
             androidContext(this@QrbnbClientApplication)
             modules(networkModule,otpModule, VerifyOtpModule, TokenModule, ClientDashboardModule,
                 ManageCategoryModule, AddCategoryModule, ManageCategoryDetailsModule,
-                MenuCOnfigurationModule
+                MenuCOnfigurationModule,AuthStatusChecker
             )
         }
     }

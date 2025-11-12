@@ -13,16 +13,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.AddCategoryUiState
 import com.example.qrbnb_client.presentation.viewmodel.AddCategoryViewModel
+import com.example.qrbnb_client.ui.RosyBrown
+import com.example.qrbnb_client.ui.body16Regular
+import com.example.qrbnb_client.ui.style_16_24_500
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCategoryScreen(
     viewModel: AddCategoryViewModel = koinInject(),
     onNavigateBack: () -> Unit = {},
-    onCategoryAdded: () -> Unit = {}
+    onCategoryAdded: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -48,51 +55,43 @@ fun AddCategoryScreen(
                 }) {
                     Text("OK")
                 }
-            }
+            },
         )
     }
 
     Scaffold(
         containerColor = Color.White,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Add Category",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
+            CustomTopAppBar(
+                title = "Add Category",
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = {}) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            painter = painterResource(Res.drawable.leftArrowIcon),
+                            contentDescription = "left arrow icon",
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
             )
-        }
+        },
     ) { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
             ) {
-                // Category Name Field
                 Text(
                     text = "Category Name*",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
+                    style = style_16_24_500(),
+                    color = Color.Black,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -103,29 +102,31 @@ fun AddCategoryScreen(
                     placeholder = {
                         Text(
                             text = "Enter category name",
-                            color = Color.Gray,
-                            fontSize = 14.sp
+                            style = body16Regular(),
+                            color = RosyBrown,
                         )
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                    singleLine = true,
                     shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFE0E0E0),
-                        unfocusedBorderColor = Color(0xFFE0E0E0),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White
-                    ),
-                    singleLine = true
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = Color(0xFFE0E0E0),
+                            focusedBorderColor = Color(0xFFFF6B6B),
+                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = Color.White,
+                        ),
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Description Field
                 Text(
                     text = "Description",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
+                    style = style_16_24_500(),
+                    color = Color.Black,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -136,105 +137,110 @@ fun AddCategoryScreen(
                     placeholder = {
                         Text(
                             text = "Add a description (optional)",
-                            color = Color.Gray,
-                            fontSize = 14.sp
+                            style = body16Regular(),
+                            color = RosyBrown,
                         )
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(120.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFE0E0E0),
-                        unfocusedBorderColor = Color(0xFFE0E0E0),
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White
-                    ),
-                    maxLines = 5
+                    colors =
+                        OutlinedTextFieldDefaults.colors(
+                            unfocusedBorderColor = Color(0xFFE0E0E0),
+                            focusedBorderColor = Color(0xFFFF6B6B),
+                            unfocusedContainerColor = Color.White,
+                            focusedContainerColor = Color.White,
+                        ),
+                    maxLines = 5,
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // Save Button
                 Button(
                     onClick = {
                         if (categoryName.isNotBlank()) {
                             viewModel.addCategory(categoryName.trim(), description.trim())
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
                     shape = RoundedCornerShape(28.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFF75C5C),
-                        disabledContainerColor = Color(0xFFFFB3B3)
-                    ),
-                    enabled = categoryName.isNotBlank() && uiState !is AddCategoryUiState.Loading
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFF75C5C),
+                            disabledContainerColor = Color(0xFFFFB3B3),
+                        ),
+                    enabled = categoryName.isNotBlank() && uiState !is AddCategoryUiState.Loading,
                 ) {
                     if (uiState is AddCategoryUiState.Loading && categoryName.isNotBlank()) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             color = Color.White,
-                            strokeWidth = 2.dp
+                            strokeWidth = 2.dp,
                         )
                     } else {
                         Text(
                             text = "Save",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.White
+                            color = Color.White,
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Cancel Button
                 TextButton(
                     onClick = onNavigateBack,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    enabled = uiState !is AddCategoryUiState.Loading
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                    enabled = uiState !is AddCategoryUiState.Loading,
                 ) {
                     Text(
                         text = "Cancel",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.Black
+                        color = Color.Black,
                     )
                 }
             }
 
-            // Error Message
             if (uiState is AddCategoryUiState.Error) {
                 Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .align(Alignment.TopCenter),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFFFFEBEE)
-                    ),
-                    shape = RoundedCornerShape(12.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                            .align(Alignment.TopCenter),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = Color(0xFFFFEBEE),
+                        ),
+                    shape = RoundedCornerShape(12.dp),
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             text = "something wrong",
-                            fontSize = 20.sp
+                            fontSize = 20.sp,
                         )
                         Text(
                             text = (uiState as AddCategoryUiState.Error).message,
                             fontSize = 14.sp,
                             color = Color(0xFFC62828),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                     }
                 }

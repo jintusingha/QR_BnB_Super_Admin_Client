@@ -132,3 +132,16 @@ fun  style_14_21_400(): TextStyle{
 
     )
 }
+
+@Composable
+fun  body16Regular(): TextStyle{
+    return TextStyle(
+        fontFamily = plusJakartaSans(),
+        fontWeight = FontWeight.W400,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+        textAlign = TextAlign.Center
+
+    )
+}
