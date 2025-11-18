@@ -7,15 +7,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.qrbnb_client.navigation.AuthStatusChecker
 import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
+import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
-
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
-
+import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
 @Composable
-@Preview
 fun App() {
     MaterialTheme {
 //        OtpScreen()
@@ -23,11 +22,10 @@ fun App() {
 //        AppNavHost(authStatusChecker)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
-        AddCategoryScreen()
+//        AddCategoryScreen()
 //        ManageCategoryDetailScreen(categoryId = "")
 //        MenuConfigurationScreen()
-
-
-
+//        TagsScreen(onBackClick = {})
+        OrdersScreen(onBackClick = {})
     }
 }
