@@ -86,6 +86,7 @@ fun activity_overview_values(): TextStyle =
         letterSpacing = 0.sp,
         textAlign = TextAlign.Center,
     )
+
 @Composable
 fun style_16_20_700(): TextStyle =
     TextStyle(
@@ -96,18 +97,28 @@ fun style_16_20_700(): TextStyle =
         letterSpacing = 0.sp,
         textAlign = TextAlign.Center,
     )
+
 @Composable
-fun  style_14_21_500(): TextStyle{
-    return TextStyle(
+fun style_14_21_700(): TextStyle =
+    TextStyle(
+        fontFamily = plusJakartaSans(),
+        fontWeight = FontWeight.W700,
+        fontSize = 14.sp,
+        lineHeight = 21.sp,
+        letterSpacing = 0.sp,
+        textAlign = TextAlign.Center,
+    )
+
+@Composable
+fun style_14_21_500(): TextStyle =
+    TextStyle(
         fontFamily = plusJakartaSans(),
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
         lineHeight = 21.sp,
         letterSpacing = 0.sp,
-        textAlign = TextAlign.Center
-
+        textAlign = TextAlign.Center,
     )
-}
 
 @Composable
 fun style_16_24_500(): TextStyle =
@@ -121,27 +132,23 @@ fun style_16_24_500(): TextStyle =
     )
 
 @Composable
-fun  style_14_21_400(): TextStyle{
-    return TextStyle(
+fun style_14_21_400(): TextStyle =
+    TextStyle(
         fontFamily = plusJakartaSans(),
         fontWeight = FontWeight.W400,
         fontSize = 14.sp,
         lineHeight = 21.sp,
         letterSpacing = 0.sp,
-        textAlign = TextAlign.Center
-
+        textAlign = TextAlign.Center,
     )
-}
 
 @Composable
-fun  body16Regular(): TextStyle{
-    return TextStyle(
+fun body16Regular(): TextStyle =
+    TextStyle(
         fontFamily = plusJakartaSans(),
         fontWeight = FontWeight.W400,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.sp,
-        textAlign = TextAlign.Center
-
+        textAlign = TextAlign.Center,
     )
-}

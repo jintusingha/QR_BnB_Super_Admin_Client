@@ -7,6 +7,7 @@ import com.example.qrbnb_client.di.AddModifierGroupModule
 import com.example.qrbnb_client.di.AddVariantModule
 import com.example.qrbnb_client.di.AuthStatusChecker
 import com.example.qrbnb_client.di.ClientDashboardModule
+import com.example.qrbnb_client.di.EditTagModule
 import com.example.qrbnb_client.di.ManageCategoryDetailsModule
 import com.example.qrbnb_client.di.ManageCategoryModule
 import com.example.qrbnb_client.di.MenuCOnfigurationModule
@@ -33,7 +34,8 @@ class QrbnbClientApplication : Application() {
             modules(networkModule,otpModule, VerifyOtpModule, TokenModule, ClientDashboardModule,
                 ManageCategoryModule, AddCategoryModule, ManageCategoryDetailsModule,
                 MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule,
-                OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule
+                OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule,
+                EditTagModule
             )
         }
     }
