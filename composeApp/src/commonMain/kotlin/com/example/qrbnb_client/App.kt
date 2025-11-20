@@ -8,8 +8,10 @@ import com.example.qrbnb_client.di.AddModifierGroupModule
 import com.example.qrbnb_client.navigation.AuthStatusChecker
 import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
 import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
+import com.example.qrbnb_client.presentation.screen.AddVariantScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
+
 
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
@@ -32,6 +34,7 @@ fun App() {
 //        TagsScreen(onBackClick = {})
 //        OrdersScreen(onBackClick = {})
 //        OrderDetailsScreen(onBackClick = {})
-        AddModifierGroupScreen(onBackClick = {})
+//        AddModifierGroupScreen(onBackClick = {})
+        AddVariantScreen(onBack = {}, onSuccess = {})
     }
 }
