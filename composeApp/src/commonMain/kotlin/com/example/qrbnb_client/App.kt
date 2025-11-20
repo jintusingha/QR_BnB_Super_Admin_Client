@@ -17,6 +17,7 @@ import com.example.qrbnb_client.presentation.screen.editTagScreen.EditTagScreen
 
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
+import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
 import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -39,6 +40,8 @@ fun App() {
 //        AddModifierGroupScreen(onBackClick = {})
 //        AddVariantScreen(onBack = {}, onSuccess = {})
 //        AddBadgeScreen(onBackClick = {})
-        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
+//        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
+        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
+
     }
 }
