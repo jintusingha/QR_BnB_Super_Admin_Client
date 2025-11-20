@@ -2,11 +2,13 @@ package com.example.qrbnb_client
 
 import android.app.Application
 import com.example.qrbnb_client.di.AddCategoryModule
+import com.example.qrbnb_client.di.AddModifierGroupModule
 import com.example.qrbnb_client.di.AuthStatusChecker
 import com.example.qrbnb_client.di.ClientDashboardModule
 import com.example.qrbnb_client.di.ManageCategoryDetailsModule
 import com.example.qrbnb_client.di.ManageCategoryModule
 import com.example.qrbnb_client.di.MenuCOnfigurationModule
+import com.example.qrbnb_client.di.OrderDetailsModule
 import com.example.qrbnb_client.di.OrdersModule
 import com.example.qrbnb_client.di.TagsModule
 import com.example.qrbnb_client.di.TokenModule
@@ -28,7 +30,8 @@ class QrbnbClientApplication : Application() {
             androidContext(this@QrbnbClientApplication)
             modules(networkModule,otpModule, VerifyOtpModule, TokenModule, ClientDashboardModule,
                 ManageCategoryModule, AddCategoryModule, ManageCategoryDetailsModule,
-                MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule
+                MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule,
+                OrderDetailsModule, AddModifierGroupModule
             )
         }
     }
