@@ -11,6 +11,7 @@ import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
 import com.example.qrbnb_client.presentation.screen.AddVariantScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
+import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
 
 
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
@@ -35,6 +36,7 @@ fun App() {
 //        OrdersScreen(onBackClick = {})
 //        OrderDetailsScreen(onBackClick = {})
 //        AddModifierGroupScreen(onBackClick = {})
-        AddVariantScreen(onBack = {}, onSuccess = {})
+//        AddVariantScreen(onBack = {}, onSuccess = {})
+        AddBadgeScreen(onBackClick = {})
     }
 }
