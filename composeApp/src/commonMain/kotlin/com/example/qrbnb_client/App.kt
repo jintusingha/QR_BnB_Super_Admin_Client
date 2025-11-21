@@ -20,6 +20,7 @@ import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageC
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
 import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
+import com.example.qrbnb_client.presentation.screen.variantsScreen.VariantsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -41,7 +42,9 @@ fun App() {
 //        AddVariantScreen(onBack = {}, onSuccess = {})
 //        AddBadgeScreen(onBackClick = {})
 //        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
-        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
+//        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
+
+        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 
     }
 }
