@@ -7,15 +7,17 @@ import androidx.navigation.compose.rememberNavController
 import com.example.qrbnb_client.di.AddModifierGroupModule
 import com.example.qrbnb_client.navigation.AuthStatusChecker
 import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
+import com.example.qrbnb_client.presentation.screen.AddItemScreen
 import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
 import com.example.qrbnb_client.presentation.screen.AddVariantScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
+
 import com.example.qrbnb_client.presentation.screen.editTagScreen.EditTagScreen
-
-
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
+
+
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
@@ -44,7 +46,8 @@ fun App() {
 //        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
 //        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 
-        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
+//        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
+        AddItemScreen(onBack = {})
 
     }
 }

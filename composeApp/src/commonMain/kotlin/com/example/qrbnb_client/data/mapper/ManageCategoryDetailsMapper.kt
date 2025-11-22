@@ -9,6 +9,7 @@ fun ManageCategoryDetailsDto.toDomain(): ManageCategoryDetails{
         name=name,
         description=description,
         image=image,
-        isAvailable=isAvailable
+        isAvailable=isAvailable,
+        price=price
     )
 }

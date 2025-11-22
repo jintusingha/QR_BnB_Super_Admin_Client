@@ -1,7 +1,10 @@
 package com.example.qrbnb_client.presentation.screen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -10,14 +13,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.AddVariantUiState
-import com.example.qrbnb_client.presentation.state.VariantOptionUi
 import com.example.qrbnb_client.presentation.viewmodel.AddVariantViewModel
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.style_14_21_700
+import com.example.qrbnb_client.ui.style_16_24_400
+import com.example.qrbnb_client.ui.style_16_24_500
+import com.example.qrbnb_client.ui.style_18_23_700
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,35 +47,29 @@ fun AddVariantScreen(
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is AddVariantUiState.Success -> {
-                println("Success: ${state.message}")
-
                 onSuccess()
-
                 optionName = ""
                 optionPrice = ""
-
                 viewModel.resetState()
-            }
-            is AddVariantUiState.Error -> {
-                println("❌ Error: ${state.message}")
             }
             else -> {}
         }
     }
 
     Scaffold(
+        containerColor = Color.White,
         topBar = {
-            TopAppBar(
-                title = { Text("Add Variant") },
+            CustomTopAppBar(
+                title = "Add Variant",
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(Res.drawable.leftArrowIcon),
+                            contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
+                        )
                     }
                 },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.White,
-                    ),
             )
         },
     ) { padding ->
@@ -78,21 +85,15 @@ fun AddVariantScreen(
                         modifier = Modifier.align(Alignment.Center),
                     )
                 }
+
                 is AddVariantUiState.Error -> {
-                    Column(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center,
-                    ) {
-                        Text(
-                            text = state.message,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
+                    Text(
+                        text = state.message,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center),
+                    )
                 }
+
                 is AddVariantUiState.Data -> {
                     Column(
                         modifier =
@@ -103,29 +104,35 @@ fun AddVariantScreen(
                     ) {
                         Text(
                             text = "Variant Type",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
+                            style = style_16_24_500(),
                             modifier = Modifier.padding(bottom = 8.dp),
                         )
 
                         OutlinedTextField(
                             value = state.variantType,
                             onValueChange = { viewModel.onVariantTypeChanged(it) },
-                            placeholder = { Text("e.g. Size", color = Color.Gray) },
+                            placeholder = {
+                                Text(
+                                    "e.g. Size",
+                                    style = style_16_24_400(),
+                                    color = SoftBrown,
+                                )
+                            },
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = 24.dp),
                             colors =
                                 OutlinedTextFieldDefaults.colors(
-                                    unfocusedBorderColor = Color.LightGray,
+                                    unfocusedBorderColor = Color(0xFFE0E0E0),
+                                    focusedBorderColor = Color(0xFFFF6B6B),
                                 ),
+                            shape = RoundedCornerShape(12.dp),
                         )
 
                         Text(
                             text = "Options List",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
+                            style = style_18_23_700(),
                             modifier = Modifier.padding(bottom = 16.dp),
                         )
 
@@ -139,58 +146,89 @@ fun AddVariantScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "Option Name",
-                                    fontSize = 12.sp,
-                                    modifier = Modifier.padding(bottom = 4.dp),
+                                    style = style_16_24_500(),
+                                    modifier = Modifier.padding(bottom = 6.dp),
                                 )
                                 OutlinedTextField(
                                     value = optionName,
                                     onValueChange = { optionName = it },
-                                    placeholder = { Text("e.g. Small", color = Color.Gray) },
+                                    placeholder = {
+                                        Text(
+                                            "e.g. Small",
+                                            style = style_16_24_400(),
+                                            color = SoftBrown,
+                                        )
+                                    },
                                     modifier = Modifier.fillMaxWidth(),
                                     colors =
                                         OutlinedTextFieldDefaults.colors(
-                                            unfocusedBorderColor = Color.LightGray,
+                                            unfocusedBorderColor = Color(0xFFE0E0E0),
+                                            focusedBorderColor = Color(0xFFFF6B6B),
                                         ),
+                                    shape = RoundedCornerShape(12.dp),
                                 )
                             }
 
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = "Price (Optional)",
-                                    fontSize = 12.sp,
-                                    modifier = Modifier.padding(bottom = 4.dp),
+                                    style = style_16_24_500(),
+                                    modifier = Modifier.padding(bottom = 6.dp),
                                 )
                                 OutlinedTextField(
                                     value = optionPrice,
                                     onValueChange = { optionPrice = it },
-                                    placeholder = { Text("e.g. 2.50", color = Color.Gray) },
+                                    placeholder = {
+                                        Text(
+                                            "e.g. 2.50",
+                                            style = style_16_24_400(),
+                                            color = SoftBrown,
+                                        )
+                                    },
                                     modifier = Modifier.fillMaxWidth(),
                                     colors =
                                         OutlinedTextFieldDefaults.colors(
-                                            unfocusedBorderColor = Color.LightGray,
+                                            unfocusedBorderColor = Color(0xFFE0E0E0),
+                                            focusedBorderColor = Color(0xFFFF6B6B),
                                         ),
+                                    shape = RoundedCornerShape(12.dp),
                                 )
                             }
                         }
 
-                        TextButton(
-                            onClick = {
-                                if (optionName.isNotBlank()) {
-                                    viewModel.addOption(
-                                        optionName,
-                                        optionPrice.ifBlank { null },
-                                    )
-                                    optionName = ""
-                                    optionPrice = ""
-                                }
-                            },
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Surface(
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
+                                    .height(48.dp)
+                                    .clickable {
+                                        if (optionName.isNotBlank()) {
+                                            viewModel.addOption(
+                                                optionName,
+                                                optionPrice.ifBlank { null },
+                                            )
+                                            optionName = ""
+                                            optionPrice = ""
+                                        }
+                                    },
+                            color = Color(0xFFF5F0F0),
+                            shape = RoundedCornerShape(24.dp),
                         ) {
-                            Text("+ Add Option")
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    text = "+ Add Option",
+                                    style = style_14_21_700(),
+                                    color = Color.Black,
+                                )
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         state.options.forEach { option ->
                             Card(
@@ -224,7 +262,9 @@ fun AddVariantScreen(
                                             )
                                         }
                                     }
-                                    IconButton(onClick = { viewModel.deleteOption(option) }) {
+                                    IconButton(
+                                        onClick = { viewModel.deleteOption(option) },
+                                    ) {
                                         Icon(
                                             Icons.Default.Delete,
                                             contentDescription = "Delete",
@@ -234,12 +274,9 @@ fun AddVariantScreen(
                                 }
                             }
                         }
-
-                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
-
-                is AddVariantUiState.Success -> { /* Handled by LaunchedEffect */ }
+                is AddVariantUiState.Success -> Unit
             }
 
             if (uiState is AddVariantUiState.Data || uiState is AddVariantUiState.Success) {
@@ -249,25 +286,51 @@ fun AddVariantScreen(
                             .fillMaxWidth()
                             .align(Alignment.BottomCenter)
                             .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    OutlinedButton(
-                        onClick = onBack,
-                        modifier = Modifier.weight(1f),
+                    Surface(
+                        modifier =
+                            Modifier
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .clickable { onBack() }
+                                .padding(horizontal = 0.dp),
+                        color = Color(0xFFF5F0F0),
                     ) {
-                        Text("Cancel")
+                        Box(
+                            modifier =
+                                Modifier
+                                    .padding(horizontal = 20.dp)
+                                    .fillMaxHeight(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "Cancel",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                            )
+                        }
                     }
 
                     Button(
                         onClick = { viewModel.saveVariant() },
-                        modifier = Modifier.weight(1f),
                         enabled = uiState !is AddVariantUiState.Loading,
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFFF5252),
                             ),
+                        shape = RoundedCornerShape(20.dp),
+                        modifier = Modifier.height(40.dp),
+                        contentPadding = PaddingValues(horizontal = 20.dp),
                     ) {
-                        Text("Save")
+                        Text(
+                            text = "Save",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White,
+                        )
                     }
                 }
             }

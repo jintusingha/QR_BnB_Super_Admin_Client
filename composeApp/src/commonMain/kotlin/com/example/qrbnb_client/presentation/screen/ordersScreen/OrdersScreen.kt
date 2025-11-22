@@ -1,12 +1,12 @@
 package com.example.qrbnb_client.presentation.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,9 +20,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.qrbnb_client.domain.entity.orderReponse.OrderEntity
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.OrderUiState
 import com.example.qrbnb_client.presentation.viewmodel.OrdersViewModel
+import com.example.qrbnb_client.ui.Black
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.style_14_21_400
+import com.example.qrbnb_client.ui.style_14_21_500
+import com.example.qrbnb_client.ui.style_16_24_400
+import com.example.qrbnb_client.ui.style_16_24_500
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
+
+@Composable
+fun StatusChip(status: String) {
+    Row(
+        modifier =
+            Modifier
+                .background(
+                    color = Color(0xFFF3ECEC),
+                    shape = RoundedCornerShape(16.dp),
+                ).padding(horizontal = 10.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Icon(
+            imageVector = Icons.Default.AccessTime,
+            contentDescription = null,
+            tint = Color.Black,
+            modifier = Modifier.size(18.dp),
+        )
+
+        Text(
+            text = status,
+            style = style_14_21_500(),
+            color = Black,
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,40 +71,27 @@ fun OrdersScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Orders",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
-                },
+            CustomTopAppBar(
+                title = "Orders",
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.White,
-                    ),
             )
         },
     ) { paddingValues ->
+
         when (uiState) {
             is OrderUiState.Loading -> {
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
                     contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
+                ) { CircularProgressIndicator() }
             }
 
             is OrderUiState.Success -> {
@@ -77,35 +101,25 @@ fun OrdersScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .background(Color(0xFFF5F5F5))
+                            .background(Color.White)
                             .padding(paddingValues),
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(orders) { order ->
-                        OrderCard(order = order)
-                    }
+                    items(orders) { order -> OrderItem(order) }
                 }
             }
 
             is OrderUiState.Error -> {
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Text(
-                            text = (uiState as OrderUiState.Error).message,
-                            color = Color.Red,
-                            fontSize = 16.sp,
-                        )
-                    }
+                    Text(
+                        text = (uiState as OrderUiState.Error).message,
+                        color = Color.Red,
+                        fontSize = 16.sp,
+                    )
                 }
             }
         }
@@ -113,19 +127,15 @@ fun OrdersScreen(
 }
 
 @Composable
-fun OrderCard(order: OrderEntity) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = Color.White,
-            ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+fun OrderItem(order: OrderEntity) {
+    Box(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color.White, shape = RoundedCornerShape(12.dp))
+                .padding(16.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-        ) {
+        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -133,7 +143,7 @@ fun OrderCard(order: OrderEntity) {
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.Top,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     AsyncImage(
                         model = order.imageUrl,
@@ -146,97 +156,73 @@ fun OrderCard(order: OrderEntity) {
                         contentScale = ContentScale.Crop,
                     )
 
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(2.dp),
-                    ) {
+                    Column(verticalArrangement = Arrangement.spacedBy(0.dp)) {
                         Text(
                             text = order.title,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            style = style_16_24_500(),
                             color = Color.Black,
                         )
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
                         Text(
                             text = order.subtitle,
-                            fontSize = 13.sp,
-                            color = Color.Gray,
+                            style = style_14_21_400(),
+                            color = SoftBrown,
                         )
+
+                        Spacer(modifier = Modifier.height(1.dp))
+
                         Text(
                             text = order.description,
-                            fontSize = 13.sp,
-                            color = Color.Gray,
+                            style = style_14_21_400(),
+                            color = SoftBrown,
                         )
                     }
                 }
 
-                // Price
-                Text(
-                    text = "${"%.2f".format(order.price)}",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black,
-                )
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = "$${String.format("%.2f", order.price)}",
+                        style = style_16_24_400(),
+                        color = Color.Black,
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    StatusChip(order.status)
+                }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Status
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Default.AccessTime,
-                    contentDescription = null,
-                    modifier = Modifier.size(16.dp),
-                    tint = Color.Gray,
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = order.status,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                OutlinedButton(
-                    onClick = { /* TODO: Update Status */ },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors =
-                        ButtonDefaults.outlinedButtonColors(
-                            containerColor = Color.White,
-                        ),
+                Box(
+                    modifier =
+                        Modifier
+                            .background(
+                                color = Color(0xFFF3ECEC),
+                                shape = RoundedCornerShape(50),
+                            ).padding(horizontal = 20.dp, vertical = 10.dp)
+                            .clickable { },
                 ) {
                     Text(
                         text = "Update Status",
                         fontSize = 14.sp,
                         color = Color.Black,
+                        fontWeight = FontWeight.Medium,
                     )
                 }
 
-                OutlinedButton(
-                    onClick = { /* TODO: Cancel Order */ },
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(8.dp),
-                    colors =
-                        ButtonDefaults.outlinedButtonColors(
-                            containerColor = Color.White,
-                        ),
-                ) {
-                    Text(
-                        text = "Cancel Order",
-                        fontSize = 14.sp,
-                        color = Color.Black,
-                    )
-                }
+                Text(
+                    text = "Cancel Order",
+                    fontSize = 14.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.clickable { },
+                )
             }
         }
     }

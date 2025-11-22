@@ -16,7 +16,8 @@ class ManageCategoryDetailsDataSourceImpl : ManageCategoryDetailsDataSource {
                 name = "Food",
                 description = "All kinds of food items available",
                 image = Res.drawable.food,
-                isAvailable = true,
+                isAvailable = false,
+                price="9.99"
             ),
             ManageCategoryDetailsDto(
                 id = "2",
@@ -24,6 +25,7 @@ class ManageCategoryDetailsDataSourceImpl : ManageCategoryDetailsDataSource {
                 description = "Beverages and cold drinks",
                 image = Res.drawable.food,
                 isAvailable = false,
+                price="9.99"
             ),
             ManageCategoryDetailsDto(
                 id = "3",
@@ -31,14 +33,16 @@ class ManageCategoryDetailsDataSourceImpl : ManageCategoryDetailsDataSource {
                 description = "Quick and light snacks for all times",
                 image = Res.drawable.food,
 
-                isAvailable = true,
+                isAvailable = false,
+                price="9.99"
             ),
             ManageCategoryDetailsDto(
                 id = "4",
                 name = "Groceries",
                 description = "Daily household grocery items",
                 image = Res.drawable.food,
-                isAvailable = true,
+                isAvailable = false,
+                price="9.99"
             ),
             ManageCategoryDetailsDto(
                 id = "5",
@@ -46,6 +50,7 @@ class ManageCategoryDetailsDataSourceImpl : ManageCategoryDetailsDataSource {
                 description = "Gadgets and small electronic items",
                 image = Res.drawable.food,
                 isAvailable = false,
+                price="9.99"
             ),
             ManageCategoryDetailsDto(
                 id="6",
@@ -53,6 +58,7 @@ class ManageCategoryDetailsDataSourceImpl : ManageCategoryDetailsDataSource {
                 description = "get accessories here",
                 image = Res.drawable.food,
                 isAvailable = false,
+                price="9.99"
             )
             
         )

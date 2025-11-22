@@ -7,5 +7,6 @@ data class ManageCategoryDetailsDto(
     val name:String,
     val description:String,
     val image: DrawableResource,
-    val isAvailable:Boolean
+    val isAvailable:Boolean,
+    val price:String
 )

@@ -12,14 +12,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qrbnb_client.domain.entity.tagResponse.TagEntity
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.TagUiState
 import com.example.qrbnb_client.presentation.viewmodel.TagViewModel
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.style_16_24_400
+import com.example.qrbnb_client.ui.style_16_24_700
+import com.example.qrbnb_client.ui.style_18_23_700
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,27 +41,16 @@ fun TagsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Tags",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+            CustomTopAppBar(title = "Tags",
+                navigationIcon ={
+                    IconButton(onClick = {}){
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "Back",
+                            modifier=Modifier.size(24.dp)
                         )
                     }
-                },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.White,
-                    ),
-            )
+                })
         },
     ) { paddingValues ->
         Column(
@@ -63,19 +61,17 @@ fun TagsScreen(
                     .padding(paddingValues)
                     .padding(horizontal = 16.dp),
         ) {
-            // Subtitle
+
             Text(
                 text = "Manage item categorization",
-                fontSize = 14.sp,
-                color = Color.Gray,
+                style= style_16_24_400(),
                 modifier = Modifier.padding(top = 8.dp, bottom = 24.dp),
             )
 
-            // Existing Tags Section
+
             Text(
                 text = "Existing Tags",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                style= style_18_23_700(),
                 modifier = Modifier.padding(bottom = 16.dp),
             )
 
@@ -125,83 +121,85 @@ fun TagsScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Add New Tag Section
+
             Text(
                 text = "Add New Tag",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                style=style_18_23_700(),
                 modifier = Modifier.padding(bottom = 16.dp),
             )
 
-            // Input Field
+
             OutlinedTextField(
                 value = newTagText,
                 onValueChange = { newTagText = it },
                 placeholder = {
                     Text(
                         text = "Enter new tag",
-                        color = Color.Gray,
+                        style = style_16_24_400(),
+                        color = SoftBrown
                     )
                 },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                colors =
-                    OutlinedTextFieldDefaults.colors(
-                        unfocusedContainerColor = Color(0xFFF5F5F5),
-                        focusedContainerColor = Color(0xFFF5F5F5),
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedBorderColor = Color.Transparent,
-                    ),
-                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                singleLine = true,
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF5F5F5),
+                    focusedContainerColor = Color(0xFFF5F5F5),
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedBorderColor = Color.Transparent,
+                    cursorColor = SoftBrown
+                ),
+                shape = RoundedCornerShape(10.dp)
             )
 
-            // Add Tag Button
+
+
             Button(
-                onClick = { /* TODO: Add functionality later */ },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF7B7B),
-                    ),
-                shape = RoundedCornerShape(28.dp),
+                onClick = { /* TODO */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .defaultMinSize(minWidth = 84.dp)
+                    .widthIn(max = 480.dp),
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF7B7B)
+                ),
+                contentPadding = PaddingValues(
+                    start = 20.dp,
+                    end = 20.dp
+                )
             ) {
                 Text(
                     text = "Add Tag",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White,
+                    style=style_16_24_700(),
+                    color = Color.White
                 )
             }
+
         }
     }
 }
 
 @Composable
 fun TagChip(tagName: String) {
-    Surface(
-        shape = RoundedCornerShape(20.dp),
-        color = Color(0xFFF5F5F5),
-        modifier =
-            Modifier
-                .height(40.dp)
-                .wrapContentWidth(),
+    Row(
+        modifier = Modifier
+            .height(32.dp)
+            .defaultMinSize(minWidth = 122.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFF5F0F0)),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier =
-                Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = tagName,
-                fontSize = 14.sp,
-                color = Color.Black,
-            )
-        }
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Text(
+            text = tagName,
+            fontSize = 14.sp,
+            color = Color.Black
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
     }
 }

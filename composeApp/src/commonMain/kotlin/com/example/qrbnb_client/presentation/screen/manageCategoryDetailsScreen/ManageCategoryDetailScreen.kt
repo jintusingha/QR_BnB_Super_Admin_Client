@@ -1,68 +1,41 @@
 package com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.qrbnb_client.domain.entity.manageCategoryDetailsResponse.ManageCategoryDetails
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.ManageCategoryDetailsUiState
 import com.example.qrbnb_client.presentation.viewmodel.ManageCategoryDetailViewModel
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.body16Regular
+import com.example.qrbnb_client.ui.search_field_color
+import com.example.qrbnb_client.ui.search_icon_placeholdertext
+import com.example.qrbnb_client.ui.style_14_21_400
+import com.example.qrbnb_client.ui.style_14_21_700
+import com.example.qrbnb_client.ui.style_16_24_500
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.arrowdown
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
+import qr_bnb_client.composeapp.generated.resources.searchicon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +46,7 @@ fun ManageCategoryDetailScreen(
     onNavigateBack: () -> Unit = {},
     onAddItemClick: () -> Unit = {},
     onEditClick: (String) -> Unit = {},
-    onDeleteClick: (String) -> Unit = {}
+    onDeleteClick: (String) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
@@ -86,26 +59,15 @@ fun ManageCategoryDetailScreen(
     Scaffold(
         containerColor = Color.White,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = categoryName,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold
+            CustomTopAppBar(title = "Manage Category", navigationIcon = {
+                IconButton(onClick = onNavigateBack) {
+                    Icon(
+                        painterResource(Res.drawable.leftArrowIcon),
+                        contentDescription = "Back",
+                        modifier = Modifier.size(24.dp),
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
-            )
+                }
+            })
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -113,29 +75,30 @@ fun ManageCategoryDetailScreen(
                 containerColor = Color(0xFFF75C5C),
                 contentColor = Color.White,
                 shape = RoundedCornerShape(28.dp),
-                modifier = Modifier
-                    .width(64.dp)
-                    .height(56.dp)
+                modifier =
+                    Modifier
+                        .width(64.dp)
+                        .height(56.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Item",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             }
-        }
+        },
     ) { paddingValues ->
+
         when (uiState) {
             is ManageCategoryDetailsUiState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         CircularProgressIndicator(modifier = Modifier.size(48.dp))
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Loading Items...")
@@ -144,28 +107,17 @@ fun ManageCategoryDetailScreen(
             }
 
             is ManageCategoryDetailsUiState.Error -> {
+                val message = (uiState as ManageCategoryDetailsUiState.Error).message
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(24.dp)
-                    ) {
-                        Text(
-                            text = "Error",
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFF44336)
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = (uiState as ManageCategoryDetailsUiState.Error).message,
-                            color = Color(0xFFF44336)
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Error: $message", color = Color.Red)
+                        Spacer(modifier = Modifier.height(12.dp))
                         Button(onClick = { viewModel.loadManageCategoryDetails() }) {
                             Text("Retry")
                         }
@@ -176,132 +128,73 @@ fun ManageCategoryDetailScreen(
             is ManageCategoryDetailsUiState.Success -> {
                 val items = (uiState as ManageCategoryDetailsUiState.Success).categories
 
-                val filteredItems = items.filter { item ->
-                    val matchesSearch = item.name.contains(searchQuery, ignoreCase = true)
-                    val matchesFilter = when (selectedFilter) {
-                        "Available" -> item.isAvailable
-                        "Unavailable" -> !item.isAvailable
-                        else -> true
+                val filteredItems =
+                    items.filter { item ->
+                        val matchesSearch = item.name.contains(searchQuery, ignoreCase = true)
+                        val matchesFilter =
+                            when (selectedFilter) {
+                                "Available" -> item.isAvailable
+                                "Unavailable" -> !item.isAvailable
+                                else -> true
+                            }
+                        matchesSearch && matchesFilter
                     }
-                    matchesSearch && matchesFilter
-                }
 
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
                 ) {
-                    // Search Bar
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(Res.drawable.searchicon),
+                                contentDescription = "Search",
+                                modifier = Modifier.size(24.dp),
+                                tint = search_icon_placeholdertext,
+                            )
+                        },
                         placeholder = {
                             Text(
                                 text = "Search items",
-                                color = Color.Gray,
-                                fontSize = 14.sp
+                                style = body16Regular(),
+                                color = search_icon_placeholdertext,
                             )
                         },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Search",
-                                tint = Color.Gray
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFFE0E0E0),
-                            unfocusedBorderColor = Color(0xFFE0E0E0),
-                            focusedContainerColor = Color(0xFFF5F5F5),
-                            unfocusedContainerColor = Color(0xFFF5F5F5)
-                        ),
-                        singleLine = true
+                        singleLine = true,
+                        colors =
+                            OutlinedTextFieldDefaults.colors(
+                                unfocusedContainerColor = search_field_color,
+                                focusedContainerColor = search_field_color,
+                                unfocusedBorderColor = Color.Transparent,
+                                focusedBorderColor = Color.Transparent,
+                            ),
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    FilterChip(
+                        selectedFilter = selectedFilter,
+                        onFilterSelected = { selectedFilter = it },
                     )
 
-                    // Filter Dropdown
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    LazyColumn(
+                        contentPadding = PaddingValues(bottom = 90.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        var expanded by remember { mutableStateOf(false) }
-
-                        Box {
-                            OutlinedButton(
-                                onClick = { expanded = true },
-                                shape = RoundedCornerShape(8.dp),
-                                colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = Color.White
-                                )
-                            ) {
-                                Text(
-                                    text = selectedFilter,
-                                    fontSize = 14.sp,
-                                    color = Color.Black
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text("▼", fontSize = 10.sp)
-                            }
-
-                            DropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false }
-                            ) {
-                                listOf("Available", "Unavailable", "All").forEach { filter ->
-                                    DropdownMenuItem(
-                                        text = { Text(filter) },
-                                        onClick = {
-                                            selectedFilter = filter
-                                            expanded = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    // Items List
-                    if (filteredItems.isEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(24.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = "No Items Found",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    color = Color.Gray
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                    text = "Tap + to add your first item",
-                                    fontSize = 14.sp,
-                                    color = Color.Gray
-                                )
-                            }
-                        }
-                    } else {
-                        LazyColumn(
-                            contentPadding = PaddingValues(bottom = 80.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items(filteredItems) { item ->
-                                CategoryItemCard(
-                                    item = item,
-                                    onEditClick = { onEditClick(item.id) },
-                                    onDeleteClick = { onDeleteClick(item.id) }
-                                )
-                            }
+                        items(filteredItems) { item ->
+                            CategoryItemCard(
+                                item = item,
+                                onEditClick = { onEditClick(item.id) },
+                                onDeleteClick = { onDeleteClick(item.id) },
+                            )
                         }
                     }
                 }
@@ -311,94 +204,141 @@ fun ManageCategoryDetailScreen(
 }
 
 @Composable
-fun CategoryItemCard(
-    item: ManageCategoryDetails,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+fun FilterChip(
+    selectedFilter: String,
+    onFilterSelected: (String) -> Unit,
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier =
+            Modifier
+                .padding(start = 16.dp, bottom = 8.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier =
+                Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFFF5F0F0))
+                    .clickable { expanded = true }
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Item Image
-            Image(
-                painter = painterResource(item.image),
-                contentDescription = item.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(8.dp))
+            Text(
+                text = selectedFilter,
+                fontSize = 14.sp,
+                color = Color.Black,
             )
+            Spacer(modifier = Modifier.width(6.dp))
+            Icon(
+                painter = painterResource(Res.drawable.arrowdown),
+                contentDescription = null,
+                modifier = Modifier.size(14.dp),
+                tint = Color.Black,
+            )
+        }
 
-            // Item Details
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = item.name,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            listOf("Available", "Unavailable", "All").forEach { filter ->
+                DropdownMenuItem(
+                    text = { Text(filter) },
+                    onClick = {
+                        onFilterSelected(filter)
+                        expanded = false
+                    },
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = item.description,
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    TextButton(
-                        onClick = onEditClick,
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(
-                            text = "Edit",
-                            fontSize = 12.sp,
-                            color = Color(0xFF2196F3)
-                        )
-                    }
-                    Text("|", color = Color.Gray)
-                    TextButton(
-                        onClick = onDeleteClick,
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(
-                            text = "Delete",
-                            fontSize = 12.sp,
-                            color = Color(0xFFF44336)
-                        )
-                    }
-                }
             }
-
-            // Toggle Switch
-            Switch(
-                checked = item.isAvailable,
-                onCheckedChange = { /* Handle toggle */ },
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color.White,
-                    checkedTrackColor = Color(0xFF4CAF50),
-                    uncheckedThumbColor = Color.White,
-                    uncheckedTrackColor = Color(0xFFE0E0E0)
-                )
-            )
         }
     }
 }
 
+@Composable
+fun CategoryItemCard(
+    item: ManageCategoryDetails,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+) {
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .height(72.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painter = painterResource(item.image),
+            contentDescription = item.name,
+            contentScale = ContentScale.Crop,
+            modifier =
+                Modifier
+                    .size(72.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+        )
 
+        Spacer(modifier = Modifier.width(12.dp))
+
+        Column(
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = item.name,
+                style = style_16_24_500(),
+            )
+
+            Text(
+                text = "$${item.price}",
+                style = style_14_21_400(),
+                color = SoftBrown,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Text(
+                    text = "Edit",
+                    style = style_14_21_400(),
+                    color = SoftBrown,
+                    modifier = Modifier.clickable { onEditClick() },
+                )
+
+                Text(
+                    text = "|",
+                    style = style_14_21_400(),
+                    color = SoftBrown,
+                    modifier = Modifier.padding(horizontal = 2.dp),
+                )
+
+                Text(
+                    text = "Delete",
+                    style = style_14_21_400(),
+                    color = SoftBrown,
+                    modifier = Modifier.clickable { onDeleteClick() },
+                )
+            }
+        }
+
+        Switch(
+            checked = item.isAvailable,
+            onCheckedChange = { /* Handle toggle */ },
+            colors =
+                SwitchDefaults.colors(
+                    checkedThumbColor = Color.White,
+                    checkedTrackColor = Color(0xFF4CAF50),
+                    uncheckedThumbColor = Color.White,
+                    uncheckedTrackColor = Color(0xFFEEEEEE),
+                    uncheckedBorderColor = Color.Transparent,
+                    uncheckedIconColor = Color.White,
+                    disabledUncheckedThumbColor = Color.White,
+                    disabledUncheckedTrackColor = Color(0xFFEEEEEE),
+                ),
+        )
+    }
+}

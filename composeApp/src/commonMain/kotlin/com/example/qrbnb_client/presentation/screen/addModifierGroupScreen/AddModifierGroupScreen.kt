@@ -14,14 +14,27 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.AddModifierGroupUiState
 import com.example.qrbnb_client.presentation.state.ModifierItemUi
 import com.example.qrbnb_client.presentation.viewmodel.AddModifierGroupViewModel
-import org.koin.compose.koinInject // Corrected import for koinInject
+import com.example.qrbnb_client.ui.Black
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.style_14_21_700
+import com.example.qrbnb_client.ui.style_16_24_400
+import com.example.qrbnb_client.ui.style_16_24_400_
+import com.example.qrbnb_client.ui.style_16_24_700
+import com.example.qrbnb_client.ui.style_18_23_700
+import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.filter
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,26 +60,17 @@ fun AddModifierGroupScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Add Modifier Group",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
-                },
+            CustomTopAppBar(
+                title = "Add Modifier Group",
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.White,
-                    ),
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -153,24 +157,29 @@ fun AddModifierGroupContent(
             placeholder = {
                 Text(
                     text = "Group Name",
-                    color = Color.Gray,
+                    color = SoftBrown,
+                    style = style_16_24_400(),
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+            singleLine = true,
             colors =
                 OutlinedTextFieldDefaults.colors(
                     unfocusedContainerColor = Color(0xFFF5F5F5),
                     focusedContainerColor = Color(0xFFF5F5F5),
                     unfocusedBorderColor = Color.Transparent,
                     focusedBorderColor = Color.Transparent,
+                    cursorColor = SoftBrown,
                 ),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(10.dp),
         )
 
         Text(
             text = "Selection Type",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = style_18_23_700(),
             color = Color.Black,
         )
 
@@ -188,31 +197,30 @@ fun AddModifierGroupContent(
 
         Text(
             text = "Choose how many options can be selected from this group.",
-            fontSize = 13.sp,
-            color = Color.Gray,
+            style=style_16_24_400_(),
+            color = Black,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = "Modifiers List",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            style=style_18_23_700(),
+            color = Black,
         )
 
         data.modifiers.forEach { modifier ->
             ModifierListItem(modifier = modifier)
         }
 
-        TextButton(
-            onClick = onAddModifierClick,
-            modifier = Modifier.padding(vertical = 8.dp),
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            contentAlignment = Alignment.CenterStart
         ) {
-            Text(
-                text = "+ Add Modifier",
-                fontSize = 14.sp,
-                color = Color.Black,
+            AddModifierPill(
+                onClick = onAddModifierClick
             )
         }
 
@@ -220,48 +228,52 @@ fun AddModifierGroupContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
+
             TextButton(
                 onClick = onCancelClick,
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .height(48.dp),
+                modifier = Modifier.height(48.dp),
             ) {
                 Text(
                     text = "Cancel",
-                    fontSize = 16.sp,
-                    color = Color.Black,
+                    style = style_16_24_700(),
+                    color = Black
                 )
             }
 
+
             Button(
                 onClick = onSaveClick,
-                modifier =
-                    Modifier
-                        .weight(1f)
-                        .height(48.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF7B7B),
-                    ),
+                modifier = Modifier
+                    .width(84.dp)
+                    .height(48.dp),
                 shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFA5959)
+                ),
+                contentPadding = PaddingValues(
+                    start = 20.dp,
+                    end = 20.dp
+                ),
                 enabled =
                     data.groupName.isNotEmpty() &&
-                        data.selectionType.isNotEmpty() &&
-                        data.modifiers.isNotEmpty(),
+                            data.selectionType.isNotEmpty() &&
+                            data.modifiers.isNotEmpty(),
             ) {
                 Text(
                     text = "Save",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.White,
+                    color = Color.White
                 )
             }
         }
+
     }
-}
+    }
+
 
 @Composable
 fun SelectionTypeOption(
@@ -273,13 +285,14 @@ fun SelectionTypeOption(
         modifier =
             Modifier
                 .fillMaxWidth()
+                .height(53.dp)
                 .border(
                     width = 1.dp,
-                    color = Color(0xFFE0E0E0),
-                    shape = RoundedCornerShape(8.dp),
+                    color = Color(0xFFE8DCD6),
+                    shape = RoundedCornerShape(12.dp),
                 ).clickable { onClick() }
-                .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(15.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(
@@ -288,13 +301,14 @@ fun SelectionTypeOption(
             colors =
                 RadioButtonDefaults.colors(
                     selectedColor = Color.Black,
-                    unselectedColor = Color.Gray,
+                    unselectedColor = Color(0xFFE8DCD6),
                 ),
         )
+
         Text(
             text = text,
-            fontSize = 14.sp,
-            color = Color.Black,
+            fontSize = 16.sp,
+            color = Color(0xFF4A3F35),
         )
     }
 }
@@ -360,7 +374,6 @@ fun ModifierListItem(modifier: ModifierItemUi) {
         }
     }
 }
-
 
 @Composable
 fun AddModifierDialog(
@@ -436,4 +449,26 @@ fun AddModifierDialog(
             }
         },
     )
+}
+
+@Composable
+fun AddModifierPill(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .width(132.dp)
+            .height(40.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color(0xFFF5F5F5))
+            .clickable { onClick() }
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "+ Add Modifier",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.W700,
+            lineHeight = 21.sp,
+            color = Color.Black
+        )
+    }
 }
