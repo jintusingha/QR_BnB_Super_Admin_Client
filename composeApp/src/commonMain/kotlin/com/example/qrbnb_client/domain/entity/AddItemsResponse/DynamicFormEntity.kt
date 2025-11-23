@@ -17,7 +17,9 @@ data class FormFieldEntity(
     val note: String? = null,
     val optionsEndpoint: String? = null,
     val fields: List<FormFieldEntity>? = null,
-    var value: Any? = null
+    var value: Any? = null,
+    val options: List<FieldOptionEntity>? = null
+
 )
 
 data class FieldOptionEntity(

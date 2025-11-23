@@ -17,28 +17,31 @@ fun DynamicFormDto.toEntity(): DynamicFormEntity =
         actions = data.actions.map { it.toEntity() },
     )
 
-fun FormFieldDto.toEntity(): FormFieldEntity =
-    FormFieldEntity(
+fun FormFieldDto.toEntity(): FormFieldEntity {
+    return FormFieldEntity(
         id = id,
-        label = label ?: id,
+        label = label ?: "",
         type = type,
         uploadEndpoint = uploadEndpoint,
         required = required ?: false,
         defaultValue = defaultValue,
         note = note,
-        optionsEndpoint = optionsEndpoint,   // NEW
-        fields = fields?.map { it.toEntity() } // NEW
+        optionsEndpoint = optionsEndpoint,
+        options = options?.map { it.toEntity() },   // ← NEW
+        fields = fields?.map { it.toEntity() },
+        value = null
     )
+}
 
-fun FieldOptionDto.toEntity(): FieldOptionEntity =
-    FieldOptionEntity(
+fun FieldOptionDto.toEntity(): FieldOptionEntity {
+    return FieldOptionEntity(
         label = label,
         value = value,
         price = price,
         selectionType = selectionType,
-        options = options?.map { it.toEntity() },
+        options = options?.map { it.toEntity() }   // nested options
     )
-
+}
 fun FormActionDto.toEntity(): FormActionEntity =
     FormActionEntity(
         id = id,

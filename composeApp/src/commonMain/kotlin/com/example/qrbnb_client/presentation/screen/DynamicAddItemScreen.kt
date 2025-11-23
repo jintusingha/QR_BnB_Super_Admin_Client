@@ -1,5 +1,6 @@
 package com.example.qrbnb_client.presentation.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,18 +8,31 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qrbnb_client.domain.entity.AddItemsResponse.DynamicFormEntity
 import com.example.qrbnb_client.domain.entity.AddItemsResponse.FormFieldEntity
+import com.example.qrbnb_client.domain.entity.AddItemsResponse.FieldOptionEntity
+import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.viewmodel.AddItemFormViewModel
+import com.example.qrbnb_client.ui.Black
+import com.example.qrbnb_client.ui.SoftBrown
+import com.example.qrbnb_client.ui.style_16_20_700
+import com.example.qrbnb_client.ui.style_16_24_400
+import com.example.qrbnb_client.ui.style_16_24_500
+import com.example.qrbnb_client.ui.style_18_23_700
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
+import qr_bnb_client.composeapp.generated.resources.Res
+import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,20 +44,33 @@ fun DynamicAddItemScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Add New Item") },
+            CustomTopAppBar(
+                title = "Add New Item",
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.KeyboardArrowDown, contentDescription = null)
+                        Icon(
+                            painter = painterResource(Res.drawable.leftArrowIcon),
+                            contentDescription = "Back",
+                            modifier = Modifier.size(24.dp),
+                        )
                     }
                 }
             )
-        }
+        },
+        containerColor = Color.White,
     ) { padding ->
-        Box(Modifier.padding(padding)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
             when {
                 uiState.isLoading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
-                uiState.error != null -> Text("Error: ${uiState.error}", Modifier.align(Alignment.Center))
+                uiState.error != null -> Text(
+                    "Error: ${uiState.error}",
+                    Modifier.align(Alignment.Center),
+                    color = Color.Red
+                )
                 uiState.form != null -> DynamicFormUI(
                     form = uiState.form!!,
                     onFieldChange = viewModel::onFieldValueChanged,
@@ -61,6 +88,7 @@ fun DynamicFormUI(
     onSubmit: () -> Unit
 ) {
     var bottomSheetData by remember { mutableStateOf<BottomSheetData?>(null) }
+    var isAdvancedOptionsExpanded by remember { mutableStateOf(false) }
 
     Column(
         Modifier
@@ -74,37 +102,23 @@ fun DynamicFormUI(
 
             when (field.type.lowercase()) {
 
-                "text" -> {
-                    OutlinedTextField(
-                        value = field.value as? String ?: "",
-                        onValueChange = { onFieldChange(field.id, it) },
-                        placeholder = { Text(field.label) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                }
+                "text" -> LabeledStyledTextField(
+                    label = field.label,
+                    value = field.value as? String ?: "",
+                    onValueChange = { onFieldChange(field.id, it) }
+                )
 
-                "number" -> {
-                    OutlinedTextField(
-                        value = field.value as? String ?: "",
-                        onValueChange = { onFieldChange(field.id, it) },
-                        placeholder = { Text(field.label) },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                }
+                "number" -> LabeledStyledTextField(
+                    label = field.label,
+                    value = field.value as? String ?: "",
+                    onValueChange = { onFieldChange(field.id, it) }
+                )
 
-                "textarea" -> {
-                    OutlinedTextField(
-                        value = field.value as? String ?: "",
-                        onValueChange = { onFieldChange(field.id, it) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp),
-                        placeholder = { Text(field.label) },
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                }
+                "textarea" -> LabeledLargeTextArea(
+                    label = field.label,
+                    value = field.value as? String ?: "",
+                    onValueChange = { onFieldChange(field.id, it) }
+                )
 
                 "switch" -> {
                     Row(
@@ -112,42 +126,163 @@ fun DynamicFormUI(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(field.label)
+                        Text(field.label, style = style_16_24_400(), color = Black)
                         Switch(
                             checked = field.value as? Boolean ?: field.defaultValue ?: false,
                             onCheckedChange = { onFieldChange(field.id, it) }
                         )
                     }
+
+
+                    if (field.id == "availability" || field.label.contains("Availability", ignoreCase = true)) {
+                        Spacer(modifier = Modifier.height(8.dp))
+
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { isAdvancedOptionsExpanded = !isAdvancedOptionsExpanded }
+                                .padding(vertical = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Advanced Options",
+                                style = style_16_24_500(),
+                                color = Black
+                            )
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = if (isAdvancedOptionsExpanded) "Collapse" else "Expand",
+                                tint = Black,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
                 }
 
-                "file" -> {
-                    FilePickerField(
-                        label = field.label,
-                        onPick = { onFieldChange(field.id, "dummy-file-path") }
-                    )
-                }
+                "file" -> FilePickerField(
+                    label = field.label,
+                    subtitle = "Upload an image of the item",
+                    onPick = { onFieldChange(field.id, "dummy-file-path") }
+                )
 
                 "select", "multiselect", "dynamiclist" -> {
-                    SelectField(
-                        label = field.label,
-                        selectedText = field.selectedDisplayText(),
-                        onClick = { bottomSheetData = BottomSheetData(field) }
-                    )
+
+
+                    val shouldShow = field.id == "category" ||
+                            (isAdvancedOptionsExpanded &&
+                                    (field.id == "badges" || field.id == "tags" ||
+                                            field.id == "variants" || field.id == "modifierGroups" ||
+                                            field.label.contains("badge", ignoreCase = true) ||
+                                            field.label.contains("tag", ignoreCase = true) ||
+                                            field.label.contains("variant", ignoreCase = true) ||
+                                            field.label.contains("modifier", ignoreCase = true)))
+
+                    if (shouldShow || field.id == "category") {
+                        SelectField(
+                            label = field.label,
+                            selectedText = field.selectedDisplayText(),
+                            onClick = { bottomSheetData = BottomSheetData(field) }
+                        )
+
+
+                        if (field.id == "category") {
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Text(
+                                text = "Modifiers",
+                                style = style_18_23_700(),
+                                color = Black
+                            )
+
+                            OutlinedButton(
+                                onClick = { /* TODO: Add Modifier Action */ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Color.White,
+                                    contentColor = Black
+                                ),
+                                contentPadding = PaddingValues(horizontal = 16.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Start,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "Add",
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = "Add Modifier",
+                                        style = style_16_20_700()
+                                    )
+                                }
+                            }
+                        }
+
+
+                        if (isAdvancedOptionsExpanded &&
+                            (field.id == "variants" || field.label.contains("variant", ignoreCase = true))) {
+                            OutlinedButton(
+                                onClick = { /* TODO: Add Variant Action */ },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                border = BorderStroke(1.dp, Color(0xFFE0E0E0)),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = Color.White,
+                                    contentColor = Black
+                                ),
+                                contentPadding = PaddingValues(horizontal = 16.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Start,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = "Add",
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = "Add Variant",
+                                        style = style_16_20_700()
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        Spacer(Modifier.height(16.dp))
 
         Button(
             onClick = onSubmit,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFF6B6B),
+            ),
             shape = RoundedCornerShape(25.dp)
         ) {
-            Text("Save", fontSize = 16.sp)
+            Text("Save", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
 
-        Spacer(Modifier.height(30.dp))
+        Spacer(Modifier.height(32.dp))
     }
 
     bottomSheetData?.let { data ->
@@ -170,7 +305,8 @@ fun BottomSheetComponent(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState()
+        sheetState = rememberModalBottomSheetState(),
+        containerColor = Color.White
     ) {
 
         Column(
@@ -179,98 +315,283 @@ fun BottomSheetComponent(
                 .padding(16.dp)
         ) {
 
-            Text(field.label, style = MaterialTheme.typography.titleLarge)
-            Spacer(Modifier.height(12.dp))
+            Text(
+                field.label,
+                style = style_18_23_700(),
+                color = Black
+            )
+            Spacer(Modifier.height(16.dp))
+
+
+            if (field.options != null) {
+                field.options!!.forEach { option ->
+                    OptionGroup(option, onSelect)
+                    Spacer(Modifier.height(12.dp))
+                }
+                return@ModalBottomSheet
+            }
 
 
             if (field.type.equals("dynamiclist", ignoreCase = true)) {
-
                 field.fields?.forEach { subField ->
-
-                    when (subField.type.lowercase()) {
-
-                        "text" -> {
-                            OutlinedTextField(
-                                value = subField.value as? String ?: "",
-                                onValueChange = { onSelect(it) },
-                                placeholder = { Text(subField.label) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-
-                        "number" -> {
-                            OutlinedTextField(
-                                value = subField.value?.toString() ?: "",
-                                onValueChange = { onSelect(it) },
-                                placeholder = { Text(subField.label) },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                    }
-
+                    LabeledStyledTextField(
+                        label = subField.label,
+                        value = subField.value?.toString() ?: "",
+                        onValueChange = { onSelect(it) }
+                    )
                     Spacer(Modifier.height(12.dp))
                 }
-
                 Button(
                     onClick = { onSelect("ADD_DYNAMIC_ITEM") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFF6B6B),
+                    ),
+                    shape = RoundedCornerShape(25.dp)
                 ) {
-                    Text("Add Variant")
+                    Text("Add Variant", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
-
                 return@ModalBottomSheet
             }
 
 
             if (field.optionsEndpoint != null) {
-                Text("Options will load from ${field.optionsEndpoint}")
+                Text(
+                    "Options will load from ${field.optionsEndpoint}",
+                    style = style_16_24_400(),
+                    color = SoftBrown
+                )
             } else {
-                Text("No options available")
+                Text(
+                    "No options available",
+                    style = style_16_24_400(),
+                    color = SoftBrown
+                )
             }
         }
     }
 }
 
+@Composable
+fun OptionGroup(
+    group: FieldOptionEntity,
+    onSelect: (Any?) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
+            .padding(12.dp)
+    ) {
+        Text(
+            group.label,
+            style = style_16_24_500(),
+            color = Black
+        )
+
+        Spacer(Modifier.height(8.dp))
+
+        group.options?.forEach { option ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onSelect(option.value) }
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    option.label,
+                    style = style_16_24_400(),
+                    color = Black
+                )
+                option.price?.let {
+                    Text(
+                        "+ ₹$it",
+                        style = style_16_24_400(),
+                        color = SoftBrown
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun SelectField(label: String, selectedText: String, onClick: () -> Unit) {
     Column {
-        Text(label)
+        Text(label, style = style_16_24_500(), color = Black)
+        Spacer(modifier = Modifier.height(6.dp))
         Box(
             Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .heightIn(min = 56.dp)
                 .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
                 .clickable { onClick() }
                 .padding(16.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Text(selectedText.ifBlank { "Select $label" })
+            Text(
+                selectedText.ifBlank { "Select $label" },
+                style = style_16_24_400(),
+                color = if (selectedText.isBlank()) SoftBrown else Black
+            )
         }
     }
 }
 
 @Composable
-fun FilePickerField(label: String, onPick: () -> Unit) {
-    Column {
-        Text(label)
+fun FilePickerField(
+    label: String,
+    subtitle: String = "Upload an image of the item",
+    onPick: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Box(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .height(160.dp)
+                .height(180.dp)
                 .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
                 .clickable { onPick() },
             contentAlignment = Alignment.Center
         ) {
-            Text("Upload Image")
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Upload",
+                    modifier = Modifier.size(48.dp),
+                    tint = Color.Gray
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    label,
+                    style = style_16_24_500(),
+                    color = Black
+                )
+                Text(
+                    subtitle,
+                    style = style_16_24_400(),
+                    color = SoftBrown
+                )
+            }
         }
     }
 }
 
+@Composable
+fun StyledTextField(
+    value: String,
+    placeholder: String,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp),
+        placeholder = {
+            Text(
+                placeholder,
+                style = style_16_24_400(),
+                color = SoftBrown
+            )
+        },
+        shape = RoundedCornerShape(12.dp),
+        singleLine = singleLine,
+        maxLines = if (singleLine) 1 else maxLines,
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedContainerColor = Color(0xFFF5F5F5),
+            focusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedBorderColor = Color.Transparent,
+            focusedBorderColor = Color.Transparent,
+        )
+    )
+}
+
+@Composable
+fun LabeledStyledTextField(
+    label: String,
+    value: String,
+    placeholder: String = label,
+    singleLine: Boolean = true,
+    maxLines: Int = 1,
+    onValueChange: (String) -> Unit
+) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            style = style_16_24_500(),
+            color = Black
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        StyledTextField(
+            value = value,
+            placeholder = placeholder,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            onValueChange = onValueChange
+        )
+    }
+}
+
+@Composable
+fun LabeledLargeTextArea(
+    label: String,
+    value: String,
+    placeholder: String = label,
+    onValueChange: (String) -> Unit
+) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            style = style_16_24_500(),
+            color = Black
+        )
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    placeholder,
+                    style = style_16_24_400(),
+                    color = SoftBrown
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            shape = RoundedCornerShape(12.dp),
+            singleLine = false,
+            maxLines = 10,
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor = Color(0xFFF5F5F5),
+                focusedContainerColor = Color(0xFFF5F5F5),
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+            )
+        )
+    }
+}
+
 fun FormFieldEntity.selectedDisplayText(): String {
-    return when (type.lowercase()) {
-        "select", "multiselect", "dynamiclist" ->
-            if (optionsEndpoint != null) "Select from list" else "No options"
-        else -> ""
+    return when {
+        this.options != null -> "Select ${this.label}"
+        this.optionsEndpoint != null -> "Select from list"
+        else -> "No options"
     }
 }

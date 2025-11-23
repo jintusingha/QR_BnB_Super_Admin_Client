@@ -27,7 +27,9 @@ data class FormFieldDto(
     val defaultValue: Boolean? = null,
     val note: String? = null,
     val optionsEndpoint: String? = null,
-    val fields: List<FormFieldDto>? = null
+    val fields: List<FormFieldDto>? = null,
+    val options: List<FieldOptionDto>? = null
+
 
 )
 
