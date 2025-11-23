@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.qrbnb_client.di.AddBadgeModule
 import com.example.qrbnb_client.di.AddCategoryModule
 import com.example.qrbnb_client.di.AddItemModule
+import com.example.qrbnb_client.di.AddItemsModule
 import com.example.qrbnb_client.di.AddModifierGroupModule
 import com.example.qrbnb_client.di.AddVariantModule
 import com.example.qrbnb_client.di.AuthStatusChecker
@@ -38,7 +39,7 @@ class QrbnbClientApplication : Application() {
                 ManageCategoryModule, AddCategoryModule, ManageCategoryDetailsModule,
                 MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule,
                 OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule,
-                EditTagModule,ModifierGroupsModule, VariantsModule,AddItemModule
+                EditTagModule,ModifierGroupsModule, VariantsModule,AddItemModule,AddItemsModule
             )
         }
     }

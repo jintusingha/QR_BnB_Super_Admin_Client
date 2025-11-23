@@ -10,6 +10,7 @@ import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
 import com.example.qrbnb_client.presentation.screen.AddItemScreen
 import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
 import com.example.qrbnb_client.presentation.screen.AddVariantScreen
+import com.example.qrbnb_client.presentation.screen.DynamicAddItemScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
@@ -47,7 +48,8 @@ fun App() {
 //        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 
 //        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
-        AddItemScreen(onBack = {})
+//        AddItemScreen(onBack = {})
+        DynamicAddItemScreen(onBack = {})
 
     }
 }
