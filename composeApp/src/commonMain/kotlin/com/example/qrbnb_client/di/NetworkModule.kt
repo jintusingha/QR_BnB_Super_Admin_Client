@@ -46,6 +46,14 @@ val networkModule =
                     )
                 }
                 install(Logging) { level = LogLevel.BODY }
+//                install(Logging) {
+//                    logger = object : io.ktor.client.plugins.logging.Logger {
+//                        override fun log(message: String) {
+//                            println("KTOR --> $message")
+//                        }
+//                    }
+//                    level = LogLevel.ALL
+//                }
                 expectSuccess = true
 
                 install(Auth) {

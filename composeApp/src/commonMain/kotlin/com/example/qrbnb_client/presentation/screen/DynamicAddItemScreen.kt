@@ -167,12 +167,13 @@ fun DynamicFormUI(
                     }
                 }
 
-                "file" ->
-                    FilePickerField(
-                        label = field.label,
-                        subtitle = "Upload an image of the item",
-                        onPick = { onFieldChange(field.id, it) },
-                    )
+                "file" -> FilePickerField(
+                    fieldId = field.id,
+                    label = field.label,
+                    subtitle = "Upload an image of the item",
+                    onPick = { localPath -> onFieldChange(field.id, localPath) }
+                )
+
 
                 "select", "multiselect", "dynamiclist" -> {
                     val shouldShow =
@@ -468,45 +469,80 @@ fun SelectField(
 
 @Composable
 fun FilePickerField(
+    fieldId: String,
     label: String,
     subtitle: String = "Upload an image of the item",
     onPick: (String) -> Unit,
+    viewModel: AddItemFormViewModel = koinInject(),
     imagePickerHelper: ImagePickerHelper = koinInject(),
 ) {
-    var selectedImageUri by remember { mutableStateOf<String?>(null) }
+    var selectedLocalUri by remember { mutableStateOf<String?>(null) }
+    var isUploading by remember { mutableStateOf(false) }
 
-    val pickImage =
-        imagePickerHelper.rememberImagePicker { uri ->
-            selectedImageUri = uri
-            onPick(uri)
+    val pickImage = imagePickerHelper.rememberImagePicker { uri ->
+        selectedLocalUri = uri
+        onPick(uri)
+        isUploading = true
+        viewModel.uploadImage(fieldId, uri)
+    }
+
+
+    val fieldValue = viewModel.uiState.value.form
+        ?.fields
+        ?.find { it.id == fieldId }
+        ?.value as? String
+
+
+    LaunchedEffect(fieldValue) {
+        if (fieldValue != null && fieldValue.startsWith("http")) {
+            isUploading = false
         }
+    }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-                .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
-                .clickable { pickImage() },
-        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp)
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
+            .clickable { pickImage() },
+        contentAlignment = Alignment.Center
     ) {
-        if (selectedImageUri == null) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null,
-                    tint = Color.Gray,
-                    modifier = Modifier.size(48.dp),
-                )
-                Text(label, style = style_16_24_500(), color = Black)
-                Text(subtitle, style = style_16_24_400(), color = SoftBrown)
+
+        when {
+            isUploading -> {
+                CircularProgressIndicator()
             }
-        } else {
-            Image(
-                painter = rememberAsyncImagePainter(selectedImageUri),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-            )
+
+
+            fieldValue != null && fieldValue.startsWith("http") -> {
+                Image(
+                    painter = rememberAsyncImagePainter(fieldValue),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+
+            selectedLocalUri != null -> {
+                Image(
+                    painter = rememberAsyncImagePainter(selectedLocalUri),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            else -> {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(48.dp)
+                    )
+                    Text(label, style = style_16_24_500(), color = Black)
+                    Text(subtitle, style = style_16_24_400(), color = SoftBrown)
+                }
+            }
         }
     }
 }
