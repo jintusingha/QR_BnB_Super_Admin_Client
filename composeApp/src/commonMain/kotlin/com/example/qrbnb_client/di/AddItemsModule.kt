@@ -17,7 +17,7 @@ val AddItemsModule=module{
         FormRepositoryImpl(get())
     }
     factory{
-        AddItemFormViewModel(get(),get())
+        AddItemFormViewModel(get(),get(),get())
     }
     factory{
         GetAddItemFormUseCase(get())

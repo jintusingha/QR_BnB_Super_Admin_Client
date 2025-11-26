@@ -18,6 +18,7 @@ import com.example.qrbnb_client.di.MenuCOnfigurationModule
 import com.example.qrbnb_client.di.ModifierGroupsModule
 import com.example.qrbnb_client.di.OrderDetailsModule
 import com.example.qrbnb_client.di.OrdersModule
+import com.example.qrbnb_client.di.SubmitFormModule
 import com.example.qrbnb_client.di.TagsModule
 import com.example.qrbnb_client.di.TokenModule
 import com.example.qrbnb_client.di.UriHelperModule
@@ -43,7 +44,7 @@ class QrbnbClientApplication : Application() {
                 MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule,
                 OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule,
                 EditTagModule,ModifierGroupsModule, VariantsModule,AddItemModule,AddItemsModule,
-                ImagePickerModule, ImageUploadModule,UriHelperModule
+                ImagePickerModule, ImageUploadModule,UriHelperModule, SubmitFormModule
             )
         }
     }

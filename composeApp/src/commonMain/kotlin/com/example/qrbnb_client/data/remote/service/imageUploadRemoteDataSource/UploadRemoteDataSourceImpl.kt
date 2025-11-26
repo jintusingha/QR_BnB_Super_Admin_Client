@@ -25,7 +25,7 @@ class UploadRemoteDataSourceImpl(
         val token = tokenStorage.getAccessToken()
             ?: throw IllegalArgumentException("No access token found!")
 
-        println("Token: ${token.take(20)}...")
+        println("Token: ${token}")
         println("File: $fileName (${fileBytes.size} bytes, $mimeType)")
 
         try {
