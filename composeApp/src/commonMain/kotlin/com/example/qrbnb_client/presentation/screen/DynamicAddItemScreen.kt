@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.example.qrbnb_client.data.ImagePickerHelper
 import com.example.qrbnb_client.domain.entity.AddItemsResponse.DynamicFormEntity
@@ -68,6 +69,8 @@ fun DynamicAddItemScreen(
         ) {
             when {
                 uiState.isLoading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
+                uiState.isSubmitting ->
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
 
                 uiState.error != null ->
                     Text(
@@ -79,6 +82,7 @@ fun DynamicAddItemScreen(
                 uiState.form != null ->
                     DynamicFormUI(
                         form = uiState.form!!,
+                        isSubmitting = uiState.isSubmitting,
                         onFieldChange = viewModel::onFieldValueChanged,
                         onSubmit = viewModel::submitForm,
                     )
@@ -90,6 +94,7 @@ fun DynamicAddItemScreen(
 @Composable
 fun DynamicFormUI(
     form: DynamicFormEntity,
+    isSubmitting: Boolean,
     onFieldChange: (String, Any?) -> Unit,
     onSubmit: () -> Unit,
 ) {
@@ -279,8 +284,10 @@ fun DynamicFormUI(
 
         Spacer(Modifier.height(16.dp))
 
+
         Button(
             onClick = onSubmit,
+            enabled = !isSubmitting,
             modifier =
                 Modifier
                     .fillMaxWidth()

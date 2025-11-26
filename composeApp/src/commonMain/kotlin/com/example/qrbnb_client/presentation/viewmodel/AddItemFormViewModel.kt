@@ -89,40 +89,64 @@ class AddItemFormViewModel(
     }
 
     fun submitForm() {
-        val form = _uiState.value.form ?: return
+        val currentForm = _uiState.value.form ?: return
 
         println("---- SUBMIT STARTED ----")
 
         viewModelScope.launch {
+            _uiState.value =
+                _uiState.value.copy(
+                    isSubmitting = true,
+                    error = null,
+                    message = null,
+                )
+
             try {
                 val values =
-                    form.fields.associate { field ->
+                    currentForm.fields.associate { field ->
                         field.id to field.value
                     }
 
-                println("FORM ID: ${form.formId}")
+                println("FORM ID: ${currentForm.formId}")
                 println("VALUES: $values")
 
                 submitItemUseCase(
-                    formId = form.formId,
+                    formId = currentForm.formId,
                     values = values,
                 )
 
+                println("SUBMIT SUCCESS")
+
+                val clearedFields =
+                    currentForm.fields.map { field ->
+                        val resetValue: Any? =
+                            when (field.type.lowercase()) {
+                                "switch" -> field.defaultValue ?: false
+                                else -> null
+                            }
+                        field.copy(value = resetValue)
+                    }
+
                 _uiState.value =
                     _uiState.value.copy(
+                        isSubmitting = false,
+                        form = currentForm.copy(fields = clearedFields),
                         message = "Item added successfully!",
                     )
-
-                println("SUBMIT SUCCESS ")
             } catch (e: Exception) {
                 println(" SUBMIT FAILED")
                 println("ERROR: ${e.message}")
 
                 _uiState.value =
                     _uiState.value.copy(
+                        isSubmitting = false,
                         error = e.message ?: "Submit failed",
                     )
             }
         }
+    }
+
+    fun clearMessage() {
+        _uiState.value = _uiState.value.copy(message = null)
     }
 }
