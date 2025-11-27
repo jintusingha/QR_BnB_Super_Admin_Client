@@ -156,7 +156,12 @@ fun TagsScreen(
 
 
             Button(
-                onClick = { /* TODO */ },
+                onClick = {
+                    if (newTagText.isNotBlank()) {
+                        viewModel.createTag(newTagText)
+                        newTagText = ""
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)

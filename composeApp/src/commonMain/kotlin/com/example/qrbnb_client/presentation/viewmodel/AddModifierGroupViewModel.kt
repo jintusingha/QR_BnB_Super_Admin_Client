@@ -65,14 +65,16 @@ class AddModifierGroupViewModel(
                 val result = addModifierGroupUseCase(entity)
 
                 if (result.success) {
-                    _uiState.value = AddModifierGroupUiState.Success("Modifier group added successfully!")
-
+                    _uiState.value =
+                        AddModifierGroupUiState.Success("Modifier group added successfully!")
                     resetState()
                 } else {
-                    _uiState.value = AddModifierGroupUiState.Error(result.message)
+                    _uiState.value =
+                        AddModifierGroupUiState.Error("Failed to add modifier group")
                 }
             } catch (e: Exception) {
-                _uiState.value = AddModifierGroupUiState.Error(e.message ?: "Unknown error")
+                _uiState.value =
+                    AddModifierGroupUiState.Error(e.message ?: "Unknown error")
             }
         }
     }

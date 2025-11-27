@@ -1,12 +1,19 @@
 package com.example.qrbnb_client.data.remote.service.tagDatasource
 
+import com.example.qrbnb_client.data.remote.model.tagRequest.CreateTagRequestDto
+import com.example.qrbnb_client.data.remote.model.tagRequest.CreateTagResponseDto
 import com.example.qrbnb_client.data.remote.model.tagResponseDto.TagResponseDto
 import com.example.qrbnb_client.data.remote.model.tagResponseDto.TagResponseWrapperDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.utils.EmptyContent.contentType
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 
 class TagRemoteDataSourceImpl(
     private val baseUrl: String,
@@ -36,4 +43,28 @@ class TagRemoteDataSourceImpl(
             throw e
         }
     }
+
+    override suspend fun createTag(request: CreateTagRequestDto): CreateTagResponseDto {
+        try {
+            val url = "$baseUrl/client/menu/config/tags"
+            println("Sending Create Tag request to: $url with body=$request")
+
+            val response: HttpResponse = httpClient.post(url) {
+                contentType(ContentType.Application.Json)
+                setBody(request)
+            }
+
+            println("Create Tag response status: ${response.status}")
+
+            val raw = response.bodyAsText()
+            println("RAW CREATE TAG RESPONSE:\n$raw")
+
+            return response.body()
+
+        } catch (e: Exception) {
+            println("Error creating tag: ${e.message}")
+            throw e
+        }
+    }
+
 }

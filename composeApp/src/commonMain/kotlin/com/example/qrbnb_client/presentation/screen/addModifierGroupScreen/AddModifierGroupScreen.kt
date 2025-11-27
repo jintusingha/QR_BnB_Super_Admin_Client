@@ -8,7 +8,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
@@ -25,7 +23,6 @@ import com.example.qrbnb_client.presentation.state.ModifierItemUi
 import com.example.qrbnb_client.presentation.viewmodel.AddModifierGroupViewModel
 import com.example.qrbnb_client.ui.Black
 import com.example.qrbnb_client.ui.SoftBrown
-import com.example.qrbnb_client.ui.style_14_21_700
 import com.example.qrbnb_client.ui.style_16_24_400
 import com.example.qrbnb_client.ui.style_16_24_400_
 import com.example.qrbnb_client.ui.style_16_24_700
@@ -33,7 +30,6 @@ import com.example.qrbnb_client.ui.style_18_23_700
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import qr_bnb_client.composeapp.generated.resources.Res
-import qr_bnb_client.composeapp.generated.resources.filter
 import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,7 +45,6 @@ fun AddModifierGroupScreen(
 
     LaunchedEffect(uiState) {
         if (uiState is AddModifierGroupUiState.Success) {
-            println("succes $uiState")
             val successState = uiState as AddModifierGroupUiState.Success
             snackbarHostState.showSnackbar(
                 message = successState.message,
@@ -117,6 +112,7 @@ fun AddModifierGroupScreen(
             }
 
             is AddModifierGroupUiState.Success -> {
+
             }
         }
     }
@@ -185,19 +181,19 @@ fun AddModifierGroupContent(
 
         SelectionTypeOption(
             text = "Single Select",
-            selected = data.selectionType == "Single Select",
-            onClick = { onSelectionTypeChanged("Single Select") },
+            selected = data.selectionType == "single",
+            onClick = { onSelectionTypeChanged("single") },
         )
 
         SelectionTypeOption(
             text = "Multiple Select",
-            selected = data.selectionType == "Multiple Select",
-            onClick = { onSelectionTypeChanged("Multiple Select") },
+            selected = data.selectionType == "multiple",
+            onClick = { onSelectionTypeChanged("multiple") },
         )
 
         Text(
             text = "Choose how many options can be selected from this group.",
-            style=style_16_24_400_(),
+            style = style_16_24_400_(),
             color = Black,
         )
 
@@ -205,7 +201,7 @@ fun AddModifierGroupContent(
 
         Text(
             text = "Modifiers List",
-            style=style_18_23_700(),
+            style = style_18_23_700(),
             color = Black,
         )
 
@@ -214,14 +210,13 @@ fun AddModifierGroupContent(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            contentAlignment = Alignment.CenterStart
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+            contentAlignment = Alignment.CenterStart,
         ) {
-            AddModifierPill(
-                onClick = onAddModifierClick
-            )
+            AddModifierPill(onClick = onAddModifierClick)
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -229,9 +224,8 @@ fun AddModifierGroupContent(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-
             TextButton(
                 onClick = onCancelClick,
                 modifier = Modifier.height(48.dp),
@@ -239,24 +233,26 @@ fun AddModifierGroupContent(
                 Text(
                     text = "Cancel",
                     style = style_16_24_700(),
-                    color = Black
+                    color = Black,
                 )
             }
 
-
             Button(
                 onClick = onSaveClick,
-                modifier = Modifier
-                    .width(84.dp)
-                    .height(48.dp),
+                modifier =
+                    Modifier
+                        .width(84.dp)
+                        .height(48.dp),
                 shape = RoundedCornerShape(24.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFA5959)
-                ),
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    end = 20.dp
-                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFA5959),
+                    ),
+                contentPadding =
+                    PaddingValues(
+                        start = 20.dp,
+                        end = 20.dp,
+                    ),
                 enabled =
                     data.groupName.isNotEmpty() &&
                             data.selectionType.isNotEmpty() &&
@@ -265,15 +261,12 @@ fun AddModifierGroupContent(
                 Text(
                     text = "Save",
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.White
+                    color = Color.White,
                 )
             }
         }
-
     }
-    }
-
+}
 
 @Composable
 fun SelectionTypeOption(
@@ -347,7 +340,6 @@ fun ModifierListItem(modifier: ModifierItemUi) {
                 Text(
                     text = modifier.name,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
                     color = Color.Black,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -357,14 +349,13 @@ fun ModifierListItem(modifier: ModifierItemUi) {
                     color = Color.Gray,
                 )
                 Text(
-                    text = "$${modifier.price}",
+                    text = "₹${modifier.price}",
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
                     color = Color.Black,
                 )
             }
 
-            IconButton(onClick = { /* TODO: Delete modifier */ }) {
+            IconButton(onClick = { /* TODO: Delete modifier if you want */ }) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete",
@@ -389,7 +380,6 @@ fun AddModifierDialog(
             Text(
                 text = "Add Modifier",
                 fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
             )
         },
         text = {
@@ -454,21 +444,20 @@ fun AddModifierDialog(
 @Composable
 fun AddModifierPill(onClick: () -> Unit) {
     Box(
-        modifier = Modifier
-            .width(132.dp)
-            .height(40.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(Color(0xFFF5F5F5))
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .width(132.dp)
+                .height(40.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(Color(0xFFF5F5F5))
+                .clickable { onClick() }
+                .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "+ Add Modifier",
             fontSize = 14.sp,
-            fontWeight = FontWeight.W700,
-            lineHeight = 21.sp,
-            color = Color.Black
+            color = Color.Black,
         )
     }
 }
