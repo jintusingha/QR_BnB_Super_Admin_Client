@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
@@ -307,64 +308,57 @@ fun SelectionTypeOption(
 }
 
 @Composable
-fun ModifierListItem(modifier: ModifierItemUi) {
+fun ModifierListItem(modifier: ModifierItemUi, onDelete: () -> Unit = {}) {
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFF5F5F5),
+        ),
         shape = RoundedCornerShape(8.dp),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = Color(0xFFF5F5F5),
-            ),
-        elevation = CardDefaults.cardElevation(0.dp),
+        elevation = CardDefaults.cardElevation(0.dp)
     ) {
+
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = "Modifier Name",
-                    fontSize = 12.sp,
-                    color = Color.Gray,
-                )
+
+            Column(modifier = Modifier.weight(1f)) {
+
+
                 Text(
                     text = modifier.name,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 14.sp,
-                    color = Color.Black,
+                    color = Color.Black
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+
+
                 Text(
-                    text = "Price",
+                    text = "Price: $${modifier.price}",
                     fontSize = 12.sp,
                     color = Color.Gray,
-                )
-                Text(
-                    text = "₹${modifier.price}",
-                    fontSize = 14.sp,
-                    color = Color.Black,
+                    modifier = Modifier.padding(top = 2.dp)
                 )
             }
 
-            IconButton(onClick = { /* TODO: Delete modifier if you want */ }) {
+            IconButton(onClick = onDelete) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Delete",
-                    tint = Color.Gray,
+                    tint = Color.Gray
                 )
             }
         }
     }
 }
+
+
 
 @Composable
 fun AddModifierDialog(
@@ -376,12 +370,20 @@ fun AddModifierDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
+
+
+        containerColor = Color.White,
+        titleContentColor = Color.Black,
+        textContentColor = Color.Black,
+
         title = {
             Text(
                 text = "Add Modifier",
                 fontSize = 18.sp,
+                color = Color.Black
             )
         },
+
         text = {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -391,13 +393,15 @@ fun AddModifierDialog(
                     onValueChange = { modifierName = it },
                     placeholder = { Text("Modifier Name") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors =
-                        OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color(0xFFF5F5F5),
-                            focusedContainerColor = Color(0xFFF5F5F5),
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedBorderColor = Color.Transparent,
-                        ),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = Color(0xFFF5F5F5),
+                        focusedContainerColor = Color(0xFFF5F5F5),
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color.Transparent,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black
+                    ),
                     shape = RoundedCornerShape(8.dp),
                 )
 
@@ -406,17 +410,20 @@ fun AddModifierDialog(
                     onValueChange = { modifierPrice = it },
                     placeholder = { Text("Price") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors =
-                        OutlinedTextFieldDefaults.colors(
-                            unfocusedContainerColor = Color(0xFFF5F5F5),
-                            focusedContainerColor = Color(0xFFF5F5F5),
-                            unfocusedBorderColor = Color.Transparent,
-                            focusedBorderColor = Color.Transparent,
-                        ),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = Color(0xFFF5F5F5),
+                        focusedContainerColor = Color(0xFFF5F5F5),
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color.Transparent,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black
+                    ),
                     shape = RoundedCornerShape(8.dp),
                 )
             }
         },
+
         confirmButton = {
             Button(
                 onClick = {
@@ -424,15 +431,15 @@ fun AddModifierDialog(
                         onAdd(modifierName, modifierPrice)
                     }
                 },
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFFF7B7B),
-                    ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFF7B7B),
+                ),
                 shape = RoundedCornerShape(8.dp),
             ) {
-                Text("Add")
+                Text("Add", color = Color.White)
             }
         },
+
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text("Cancel", color = Color.Black)
@@ -440,6 +447,7 @@ fun AddModifierDialog(
         },
     )
 }
+
 
 @Composable
 fun AddModifierPill(onClick: () -> Unit) {

@@ -65,7 +65,7 @@ class AddVariantViewModel(
                 val result = addVariantUseCase(entity)
 
                 if (result.success) {
-                    _uiState.value = AddVariantUiState.Success(result.message)
+                    _uiState.value = AddVariantUiState.Success("Variant added successfully")
                 } else {
                     _uiState.value =
                         AddVariantUiState.Data(
@@ -73,7 +73,7 @@ class AddVariantViewModel(
                             options = current.options,
                         )
 
-                    _uiState.value = AddVariantUiState.Error(result.message)
+                    _uiState.value = AddVariantUiState.Error("Failed to add variant")
                 }
             } catch (e: Exception) {
                 _uiState.value =

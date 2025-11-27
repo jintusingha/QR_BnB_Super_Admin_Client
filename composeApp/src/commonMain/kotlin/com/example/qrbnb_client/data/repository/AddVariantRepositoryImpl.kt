@@ -9,7 +9,6 @@ import com.example.qrbnb_client.domain.repository.AddVariantRepository
 class AddVariantRepositoryImpl (private val remoteDataSource: AddVariantRemoteDataSource):
     AddVariantRepository {
     override suspend fun addVariant(variant: VariantEntity): AddVariantResponseDto {
-        val requestDto=variant.toRequestDto()
-        return remoteDataSource.addVariant(requestDto)
+        return remoteDataSource.addVariant(variant.toRequestDto())
     }
 }
