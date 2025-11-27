@@ -8,7 +8,7 @@ import com.example.qrbnb_client.domain.repository.TagRepository
 class TagRepositoryImpl (private val datasource: TagRemoteDataSource): TagRepository {
     override suspend fun getTags(): List<TagEntity> {
         val result=datasource.getTags()
-        return result.toDomainList()
+        return result.data.toDomainList()
 
     }
 }

@@ -6,10 +6,11 @@ import com.example.qrbnb_client.data.repository.AddBadgeRepositoryImpl
 import com.example.qrbnb_client.domain.repository.AddBadgeRepository
 import com.example.qrbnb_client.domain.usecase.AddBadgeUseCase
 import com.example.qrbnb_client.presentation.viewmodel.AddBadgeViewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val AddBadgeModule=module{
-    single<AddBadgeRemoteDataSource>{ AddBadgeRemoteDataSourceImpl() }
+    single<AddBadgeRemoteDataSource>{ AddBadgeRemoteDataSourceImpl(get(named("BASE_URL")),get(POST_LOGIN_CLIENT)) }
     single<AddBadgeRepository>{ AddBadgeRepositoryImpl(get()) }
     factory{
         AddBadgeUseCase(get())

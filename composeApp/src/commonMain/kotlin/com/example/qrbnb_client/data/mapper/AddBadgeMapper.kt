@@ -6,8 +6,8 @@ import com.example.qrbnb_client.domain.entity.addBadge.AddBadgeEntity
 fun AddBadgeEntity.toRequestDto(): AddBadgeRequestDto {
     return AddBadgeRequestDto(
         name = name,
-        colorHex = colorHex,
+        color = colorHex,
         description = description,
-        icon = icon
+
     )
 }

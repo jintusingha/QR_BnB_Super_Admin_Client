@@ -53,17 +53,11 @@ class AddBadgeViewModel(
                 val response = useCase(entity)
 
                 if (response.success) {
-                    println("Badge Added Successfully: ${response.message}")
+                    println("Badge Added Successfully: ${response.data}")
 
-                    _uiState.value =
-                        AddBadgeUiState.Data(
-                            name = "",
-                            colorHex = "",
-                            description = "",
-                            icon = "",
-                        )
+                    _uiState.value = AddBadgeUiState.Data()
                 } else {
-                    _uiState.value = AddBadgeUiState.Error(response.message)
+                    _uiState.value = AddBadgeUiState.Error("Failed to add badge")
                 }
             } catch (e: Exception) {
                 _uiState.value = AddBadgeUiState.Error(e.message ?: "Unknown error")

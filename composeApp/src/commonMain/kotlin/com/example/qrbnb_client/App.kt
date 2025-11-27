@@ -38,7 +38,7 @@ fun App() {
 //        AddCategoryScreen()
 //        ManageCategoryDetailScreen(categoryId = "")
 //        MenuConfigurationScreen()
-//        TagsScreen(onBackClick = {})
+        TagsScreen(onBackClick = {})
 //        OrdersScreen(onBackClick = {})
 //        OrderDetailsScreen(onBackClick = {})
 //        AddModifierGroupScreen(onBackClick = {})
@@ -49,7 +49,7 @@ fun App() {
 
 //        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 //        AddItemScreen(onBack = {})
-        DynamicAddItemScreen(onBack = {})
+//        DynamicAddItemScreen(onBack = {})
 
     }
 }
