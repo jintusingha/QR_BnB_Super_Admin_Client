@@ -6,6 +6,7 @@ import com.example.qrbnb_client.data.repository.OrderDetailsRepositoryImpl
 import com.example.qrbnb_client.domain.repository.OrderDetailsRepository
 import com.example.qrbnb_client.domain.usecase.OrderDetailsUseCase
 import com.example.qrbnb_client.presentation.viewmodel.OrderDetailsViewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val OrderDetailsModule =

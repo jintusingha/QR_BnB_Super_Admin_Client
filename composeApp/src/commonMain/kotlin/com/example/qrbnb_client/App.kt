@@ -22,6 +22,7 @@ import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
+import com.example.qrbnb_client.presentation.screen.roomsAndTablesScreen.RoomsAndTablesScreen
 import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
 import com.example.qrbnb_client.presentation.screen.variantsScreen.VariantsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -38,10 +39,10 @@ fun App() {
 //        AddCategoryScreen()
 //        ManageCategoryDetailScreen(categoryId = "")
 //        MenuConfigurationScreen()
-//        TagsScreen(onBackClick = {})
+        TagsScreen(onBackClick = {})
 //        OrdersScreen(onBackClick = {})
-        OrderDetailsScreen(onBackClick = {})
-//        AddModifierGroupScreen(onBackClick = {})
+//        OrderDetailsScreen(onBackClick = {})
+//        AddModifierGroupScreen(onBackClick  = {})
 //        AddVariantScreen(onBack = {}, onSuccess = {})
 //        AddBadgeScreen(onBackClick = {})
 //        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
@@ -50,6 +51,7 @@ fun App() {
 //        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 //        AddItemScreen(onBack = {})
 //        DynamicAddItemScreen(onBack = {})
+        RoomsAndTablesScreen()
 
     }
 }
