@@ -21,6 +21,7 @@ import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
+import com.example.qrbnb_client.presentation.screen.ordersListScreen.OrdersListScreen
 import com.example.qrbnb_client.presentation.screen.roomsAndTablesScreen.RoomsAndTablesScreen
 import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
 import com.example.qrbnb_client.presentation.screen.variantsScreen.VariantsScreen
@@ -52,7 +53,8 @@ fun App() {
 //        DynamicAddItemScreen(onBack = {})
 //        RoomsAndTablesScreen()
 //        CreateSeatingScreen(onSuccess = {}, onBackClick = {})
-        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
-        })
+//        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
+//        })
+        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
     }
 }
