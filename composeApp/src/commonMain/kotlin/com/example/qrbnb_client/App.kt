@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import com.example.qrbnb_client.navigation.AuthStatusChecker
 import com.example.qrbnb_client.presentation.screen.QrCodesScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
+import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -21,7 +22,7 @@ fun App() {
 //        MenuConfigurationScreen()
 //        TagsScreen(onBackClick = {})
 //        OrdersScreen(onBackClick = {})
-//        OrderDetailsScreen(onBackClick = {})
+        OrderDetailsScreen(onBackClick = {})
 //        AddModifierGroupScreen(onBackClick  = {})
 //        AddVariantScreen(onBack = {}, onSuccess = {})
 //        AddBadgeScreen(onBackClick = {})
@@ -36,6 +37,6 @@ fun App() {
 //        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
 //        })
 //        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
-        QrCodesScreen(onBackClick = {}, onQrCodeClick = {})
+//        QrCodesScreen(onBackClick = {}, onQrCodeClick = {})
     }
 }

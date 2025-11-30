@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val OrderDetailsModule =
     module {
-        single<OrderDetailsRemoteDatasource> { OrderDetailsRemoteDatasourceImpl() }
+        single<OrderDetailsRemoteDatasource> { OrderDetailsRemoteDatasourceImpl(get(named("BASE_URL")),get(POST_LOGIN_CLIENT))}
         single<OrderDetailsRepository> { OrderDetailsRepositoryImpl(get()) }
         factory {
             OrderDetailsUseCase(get())

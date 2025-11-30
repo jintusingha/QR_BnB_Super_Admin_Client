@@ -1,41 +1,53 @@
 package com.example.qrbnb_client.data.remote.model.ordersDetailsDto
 
-import com.example.qrbnb_client.data.remote.model.orderResponseDto.OrderItemDto
+
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class OrdersDetailsResponseDto(
     val success: Boolean,
-    val data:OrderDetailsDto
+    val message: String?,
+    val data: OrderDetailsDto
 )
+
 @Serializable
 data class OrderDetailsDto(
-    val orderId:String,
-    val placedAt:String,
-    val customer:CustomerDto,
-    val items:List<OrderItemsDto>,
-    val subtotal:Double,
-    val tax:Double,
-    val total:Double,
-    val timeline:List<TimeLineStepDto>,
-    val status:String
+    val orderId: String,
+    val createdAt: String,
+    val customer: CustomerDto,
+    val items: List<OrderItemDto>,
+    val summary: SummaryDto,
+    val timeline: List<TimelineDto>,
+    val metadata: Map<String, String>?
+
 )
 @Serializable
 data class CustomerDto(
-    val name:String,
-    val phone:String,
-    val table:String,
-    val avatar:String
+    val name: String,
+    val phone: String,
+    val seatingArea: SeatingAreaDto
 )
 @Serializable
-data class OrderItemsDto(
-    val name:String,
-    val quantity:Int,
-    val price:Double
+data class SeatingAreaDto(
+    val type: String,
+    val name: String
 )
 @Serializable
-data class TimeLineStepDto(
-    val title:String,
-    val time:String,
-    val completed:Boolean
+data class OrderItemDto(
+    val name: String,
+    val quantity: Int,
+    val priceEach: Double,
+    val subtotal: Double,
+    val notes: String
+)
+@Serializable
+data class SummaryDto(
+    val subtotal: Double,
+    val taxes: Double,
+    val total: Double
+)
+@Serializable
+data class TimelineDto(
+    val status: String,
+    val time: String
 )

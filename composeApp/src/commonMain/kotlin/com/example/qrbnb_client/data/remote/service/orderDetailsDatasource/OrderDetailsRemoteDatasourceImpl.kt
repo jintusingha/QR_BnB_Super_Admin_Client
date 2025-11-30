@@ -1,67 +1,35 @@
 package com.example.qrbnb_client.data.remote.service.orderDetailsDatasource
 
-import com.example.qrbnb_client.data.remote.model.orderResponseDto.OrderItemDto
-import com.example.qrbnb_client.data.remote.model.ordersDetailsDto.CustomerDto
-import com.example.qrbnb_client.data.remote.model.ordersDetailsDto.OrderDetailsDto
-import com.example.qrbnb_client.data.remote.model.ordersDetailsDto.OrderItemsDto
 import com.example.qrbnb_client.data.remote.model.ordersDetailsDto.OrdersDetailsResponseDto
-import com.example.qrbnb_client.data.remote.model.ordersDetailsDto.TimeLineStepDto
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 
-class OrderDetailsRemoteDatasourceImpl : OrderDetailsRemoteDatasource {
-    override suspend fun getOrderDetails(orderId: String): OrdersDetailsResponseDto =
-        OrdersDetailsResponseDto(
-            success = true,
-            data =
-                OrderDetailsDto(
-                    orderId = "12345",
-                    placedAt = "10:30 AM",
-                    customer =
-                        CustomerDto(
-                            name = "Ethan Carter",
-                            phone = "(555) 123–4567",
-                            table = "5",
-                            avatar = "https://example.com/avatar.png",
-                        ),
-                    items =
-                        listOf(
-                            OrderItemsDto(
-                                name = "Classic Burger",
-                                quantity = 2,
-                                price = 12.00,
-                            ),
-                            OrderItemsDto(
-                                name = "Fries",
-                                quantity = 1,
-                                price = 4.00,
-                            ),
-                            OrderItemsDto(
-                                name = "Coke",
-                                quantity = 1,
-                                price = 2.50,
-                            ),
-                        ),
-                    subtotal = 18.50,
-                    tax = 1.50,
-                    total = 20.00,
-                    timeline =
-                        listOf(
-                            TimeLineStepDto(
-                                title = "Order Received",
-                                time = "10:30 AM",
-                                completed = true,
-                            ),
-                            TimeLineStepDto(
-                                title = "Preparing",
-                                time = "10:35 AM",
-                                completed = true,
-                            ),
-                            TimeLineStepDto(
-                                title = "Out for Delivery",
-                                time = "10:45 AM",
-                                completed = false,
-                            ),
-                        ),
-                    status = "In Progress",
-                ),
-        )
+class OrderDetailsRemoteDatasourceImpl(
+    private val baseUrl: String,
+    private val httpClient: HttpClient
+) : OrderDetailsRemoteDatasource {
+
+    override suspend fun getOrderDetails(orderId: String): OrdersDetailsResponseDto {
+
+        val url = "$baseUrl/orders/$orderId"
+        println("Requesting Order Details from: $url")
+
+        val response: HttpResponse = httpClient.get(url)
+        println("Response Status: ${response.status}")
+
+        val raw = response.bodyAsText()
+        println("Raw Order Response: $raw")
+
+        return try {
+            val dto = response.body<OrdersDetailsResponseDto>()
+            println("Parsed DTO: $dto")
+            dto
+        } catch (e: Exception) {
+            println("Error parsing DTO: ${e.message}")
+            throw e
+        }
+    }
 }
