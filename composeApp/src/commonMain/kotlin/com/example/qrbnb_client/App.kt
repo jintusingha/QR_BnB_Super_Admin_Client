@@ -1,8 +1,12 @@
 package com.example.qrbnb_client
 
+import AppNavHost
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import com.example.qrbnb_client.navigation.AuthStatusChecker
+import com.example.qrbnb_client.presentation.screen.QrCodesScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
+import org.koin.compose.koinInject
 
 @Composable
 fun App() {
@@ -12,7 +16,7 @@ fun App() {
 //        AppNavHost(authStatusChecker)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
-        AddCategoryScreen()
+//        AddCategoryScreen()
 //        ManageCategoryDetailScreen(categoryId = "")
 //        MenuConfigurationScreen()
 //        TagsScreen(onBackClick = {})
@@ -32,5 +36,6 @@ fun App() {
 //        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
 //        })
 //        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
+        QrCodesScreen(onBackClick = {}, onQrCodeClick = {})
     }
 }

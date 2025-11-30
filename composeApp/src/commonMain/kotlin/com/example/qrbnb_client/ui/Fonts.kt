@@ -171,6 +171,16 @@ fun style_14_21_400(): TextStyle =
         letterSpacing = 0.sp,
         textAlign = TextAlign.Center,
     )
+@Composable
+fun style_14_21_400_(): TextStyle =
+    TextStyle(
+        fontFamily = plusJakartaSans(),
+        fontWeight = FontWeight.W400,
+        fontSize = 14.sp,
+        lineHeight = 21.sp,
+        letterSpacing = 0.sp,
+        textAlign = TextAlign.Start,
+    )
 
 @Composable
 fun body16Regular(): TextStyle =
