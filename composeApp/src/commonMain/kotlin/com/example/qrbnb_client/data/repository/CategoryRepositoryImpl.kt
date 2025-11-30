@@ -12,8 +12,13 @@ class CategoryRepositoryImpl(
     override suspend fun addCategory(
         name: String,
         description: String,
+        topLevelCategory:String
     ): AddCategory {
-        val request= AddCategoryRequestDto(name,description)
+        val request = AddCategoryRequestDto(
+            name = name,
+            topLevelCategory = topLevelCategory,
+            description = description
+        )
         val response=datasource.addCategory(request)
         return response.data.toDomain()
 

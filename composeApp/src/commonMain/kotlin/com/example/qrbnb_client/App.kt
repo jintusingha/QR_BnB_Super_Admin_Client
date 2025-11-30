@@ -1,32 +1,8 @@
 package com.example.qrbnb_client
 
-import AppNavHost
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.navigation.compose.rememberNavController
-import com.example.qrbnb_client.di.AddModifierGroupModule
-import com.example.qrbnb_client.navigation.AuthStatusChecker
-import com.example.qrbnb_client.presentation.screen.AddCategoryScreen
-import com.example.qrbnb_client.presentation.screen.AddItemScreen
-import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
-import com.example.qrbnb_client.presentation.screen.AddVariantScreen
-import com.example.qrbnb_client.presentation.screen.DynamicAddItemScreen
-import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
-import com.example.qrbnb_client.presentation.screen.OrdersScreen
-import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
-import com.example.qrbnb_client.presentation.screen.createSeatingScreen.CreateSeatingScreen
-import com.example.qrbnb_client.presentation.screen.editTagScreen.EditTagScreen
-import com.example.qrbnb_client.presentation.screen.generateQrScreen.GenerateQrScreen
-import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
-import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
-import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
-import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
-import com.example.qrbnb_client.presentation.screen.ordersListScreen.OrdersListScreen
-import com.example.qrbnb_client.presentation.screen.roomsAndTablesScreen.RoomsAndTablesScreen
-import com.example.qrbnb_client.presentation.screen.tagScreen.TagsScreen
-import com.example.qrbnb_client.presentation.screen.variantsScreen.VariantsScreen
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.koinInject
+import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
 
 @Composable
 fun App() {
@@ -36,7 +12,7 @@ fun App() {
 //        AppNavHost(authStatusChecker)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
-//        AddCategoryScreen()
+        AddCategoryScreen()
 //        ManageCategoryDetailScreen(categoryId = "")
 //        MenuConfigurationScreen()
 //        TagsScreen(onBackClick = {})
@@ -55,6 +31,6 @@ fun App() {
 //        CreateSeatingScreen(onSuccess = {}, onBackClick = {})
 //        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
 //        })
-        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
+//        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
     }
 }

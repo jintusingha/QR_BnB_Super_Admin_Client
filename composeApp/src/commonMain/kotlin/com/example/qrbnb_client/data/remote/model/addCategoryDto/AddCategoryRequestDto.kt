@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AddCategoryRequestDto(
     val name:String,
+    val topLevelCategory: String,
     val description:String
 )

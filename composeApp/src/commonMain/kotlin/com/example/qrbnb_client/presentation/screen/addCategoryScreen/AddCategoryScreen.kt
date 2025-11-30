@@ -1,9 +1,10 @@
-package com.example.qrbnb_client.presentation.screen
+package com.example.qrbnb_client.presentation.screen.addCategoryScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,12 +37,25 @@ fun AddCategoryScreen(
     var categoryName by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var showSuccessDialog by remember { mutableStateOf(false) }
+    var topLevelCategory by remember { mutableStateOf("FOODS") }
+    var showCategoryDropdown by remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState) {
         if (uiState is AddCategoryUiState.Success) {
             showSuccessDialog = true
+            categoryName = ""
+            description = ""
+            topLevelCategory = "FOODS"
         }
     }
+
+    val categoryOptions =
+        listOf(
+            "FOODS" to "Food",
+            "SERVICES" to "Services",
+            "ADD_ONS" to "Add-Ons",
+            "NEARBY_ATTRACTIONS" to "Nearby Attractions",
+        )
 
     if (showSuccessDialog && uiState is AddCategoryUiState.Success) {
         AlertDialog(
@@ -65,7 +79,7 @@ fun AddCategoryScreen(
             CustomTopAppBar(
                 title = "Add Category",
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onNavigateBack) {
                         Icon(
                             painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "left arrow icon",
@@ -124,6 +138,64 @@ fun AddCategoryScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
+                    text = "Top Level Category*",
+                    style = style_16_24_500(),
+                    color = Color.Black,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = categoryOptions.find { it.first == topLevelCategory }?.second ?: "Food",
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(56.dp)
+                                .clickable { showCategoryDropdown = !showCategoryDropdown },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = "dropdown",
+                                modifier = Modifier.size(24.dp),
+                            )
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        colors =
+                            OutlinedTextFieldDefaults.colors(
+                                unfocusedBorderColor = Color(0xFFE0E0E0),
+                                focusedBorderColor = Color(0xFFFF6B6B),
+                                unfocusedContainerColor = Color.White,
+                                focusedContainerColor = Color.White,
+                                disabledBorderColor = Color(0xFFE0E0E0),
+                                disabledContainerColor = Color.White,
+                            ),
+                        enabled = false,
+                    )
+
+                    DropdownMenu(
+                        expanded = showCategoryDropdown,
+                        onDismissRequest = { showCategoryDropdown = false },
+                        modifier = Modifier.fillMaxWidth(0.9f),
+                        containerColor = Color.White
+                    ) {
+                        categoryOptions.forEach { (key, label) ->
+                            DropdownMenuItem(
+                                text = { Text(label) },
+                                onClick = {
+                                    topLevelCategory = key
+                                    showCategoryDropdown = false
+                                },
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
                     text = "Description",
                     style = style_16_24_500(),
                     color = Color.Black,
@@ -161,7 +233,11 @@ fun AddCategoryScreen(
                 Button(
                     onClick = {
                         if (categoryName.isNotBlank()) {
-                            viewModel.addCategory(categoryName.trim(), description.trim())
+                            viewModel.addCategory(
+                                name = categoryName.trim(),
+                                topLevelCategory = topLevelCategory,
+                                description = description.trim(),
+                            )
                         }
                     },
                     modifier =
@@ -233,7 +309,7 @@ fun AddCategoryScreen(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "something wrong",
+                            text = "error",
                             fontSize = 20.sp,
                         )
                         Text(

@@ -6,7 +6,8 @@ import com.example.qrbnb_client.domain.repository.CategoryRepository
 class AddCategoryUseCase (
     private val repository: CategoryRepository
 ){
-    suspend operator fun invoke(name:String,description:String): AddCategory{
-        return repository.addCategory(name,description)
+    suspend operator fun invoke(name: String, topLevelCategory: String, description: String): AddCategory
+    {
+        return repository.addCategory(name,topLevelCategory,description)
     }
 }
