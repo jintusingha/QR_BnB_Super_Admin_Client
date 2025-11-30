@@ -11,6 +11,7 @@ import com.example.qrbnb_client.di.AuthStatusChecker
 import com.example.qrbnb_client.di.ClientDashboardModule
 import com.example.qrbnb_client.di.CreateSeatingModule
 import com.example.qrbnb_client.di.EditTagModule
+import com.example.qrbnb_client.di.GenerateQrModule
 import com.example.qrbnb_client.di.ImagePickerModule
 import com.example.qrbnb_client.di.ImageUploadModule
 import com.example.qrbnb_client.di.ManageCategoryDetailsModule
@@ -20,6 +21,7 @@ import com.example.qrbnb_client.di.ModifierGroupsModule
 import com.example.qrbnb_client.di.OrderDetailsModule
 import com.example.qrbnb_client.di.OrdersModule
 import com.example.qrbnb_client.di.SeatingAreasModule
+import com.example.qrbnb_client.di.SeatingDetailModule
 import com.example.qrbnb_client.di.SubmitFormModule
 import com.example.qrbnb_client.di.TagsModule
 import com.example.qrbnb_client.di.TokenModule
@@ -46,7 +48,7 @@ class QrbnbClientApplication : Application() {
                 MenuCOnfigurationModule,AuthStatusChecker, TagsModule, OrdersModule,
                 OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule,
                 EditTagModule,ModifierGroupsModule, VariantsModule,AddItemModule,AddItemsModule,
-                ImagePickerModule, ImageUploadModule,UriHelperModule, SubmitFormModule,SeatingAreasModule,CreateSeatingModule
+                ImagePickerModule, ImageUploadModule,UriHelperModule, SubmitFormModule,SeatingAreasModule,CreateSeatingModule,GenerateQrModule,SeatingDetailModule
             )
         }
     }

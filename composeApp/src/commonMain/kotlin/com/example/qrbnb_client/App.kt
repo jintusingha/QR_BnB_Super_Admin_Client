@@ -15,11 +15,9 @@ import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
 import com.example.qrbnb_client.presentation.screen.createSeatingScreen.CreateSeatingScreen
-
 import com.example.qrbnb_client.presentation.screen.editTagScreen.EditTagScreen
+import com.example.qrbnb_client.presentation.screen.generateQrScreen.GenerateQrScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
-
-
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
@@ -52,8 +50,9 @@ fun App() {
 //        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 //        AddItemScreen(onBack = {})
 //        DynamicAddItemScreen(onBack = {})
-        RoomsAndTablesScreen()
-        CreateSeatingScreen(onSuccess = {}, onBackClick = {})
-
+//        RoomsAndTablesScreen()
+//        CreateSeatingScreen(onSuccess = {}, onBackClick = {})
+        GenerateQrScreen(seatingId = "3", onBackClick = {}, onSuccess = { qrUrl, deepLink ->
+        })
     }
 }
