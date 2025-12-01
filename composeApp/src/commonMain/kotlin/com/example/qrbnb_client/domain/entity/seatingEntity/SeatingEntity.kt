@@ -2,9 +2,11 @@ package com.example.qrbnb_client.domain.entity.seatingEntity
 
 data class SeatingEntity(
     val id: String,
-    val name: String,
     val type: String,
-    val qrCodeUrl: String,
+    val name: String,
+    val description: String,
+    val capacity: Int,
+    val isActive: Boolean,
     val imageUrl: String,
-    val createdAt: String
+    val qrCodeUrl: String
 )

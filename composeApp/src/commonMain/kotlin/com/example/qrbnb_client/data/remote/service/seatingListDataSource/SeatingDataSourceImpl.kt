@@ -12,7 +12,7 @@ class SeatingDataSourceImpl(
 ) : SeatingDataSource {
 
     override suspend fun getSeatingList(): SeatingListResponseDto {
-        val url = "$baseUrl/client/seating/qr-codes"
+        val url = "$baseUrl/client/seating-areas"
 
         println("Requesting Seating List from: $url")
 

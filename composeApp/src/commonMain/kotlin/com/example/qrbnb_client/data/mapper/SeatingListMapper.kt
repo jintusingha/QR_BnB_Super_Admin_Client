@@ -6,11 +6,13 @@ import com.example.qrbnb_client.domain.entity.seatingEntity.SeatingEntity
 fun SeatingItemDto.toEntity(): SeatingEntity {
     return SeatingEntity(
         id = id,
-        name = name,
         type = type,
-        qrCodeUrl = qrCodeUrl,
+        name = name,
+        description = description,
+        capacity = capacity,
+        isActive = isActive,
         imageUrl = imageUrl,
-        createdAt = createdAt
+        qrCodeUrl = qrCodeUrl
     )
 }
 
