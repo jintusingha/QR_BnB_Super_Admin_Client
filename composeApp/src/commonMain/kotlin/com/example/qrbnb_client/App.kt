@@ -4,6 +4,7 @@ import AppNavHost
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import com.example.qrbnb_client.navigation.AuthStatusChecker
+import com.example.qrbnb_client.presentation.screen.ManualOrderScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.QrCodesScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
@@ -41,6 +42,7 @@ fun App() {
 //        })
 //        OrdersListScreen(clientId = "5", onBackClick = {}, onOrderClick = {})
 //        QrCodesScreen(onBackClick = {}, onQrCodeClick = {})
-        SeatingSelectionScreen(onSeatingSelected = {}, onNextClick = {}, onCloseClick = {})
+//        SeatingSelectionScreen(onSeatingSelected = {}, onNextClick = {}, onCloseClick = {})
+        ManualOrderScreen(onCloseClick = {})
     }
 }
