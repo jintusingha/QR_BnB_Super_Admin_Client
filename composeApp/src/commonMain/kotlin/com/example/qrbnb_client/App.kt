@@ -2,6 +2,7 @@ package com.example.qrbnb_client
 
 import AppNavHost
 import CheckoutScreen
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import com.example.qrbnb_client.navigation.AuthStatusChecker
@@ -11,6 +12,9 @@ import com.example.qrbnb_client.presentation.screen.QrCodesScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
 
 import com.example.qrbnb_client.presentation.screen.orderDetailsScreen.OrderDetailsScreen
+import com.example.qrbnb_client.presentation.screen.ordersCalendarScreen.OrdersCalendarScreen
+
+
 import com.example.qrbnb_client.presentation.screen.ordersListScreen.OrdersListScreen
 import com.example.qrbnb_client.presentation.screen.seatingSelectionScreen.SeatingSelectionScreen
 import org.koin.compose.koinInject
@@ -47,6 +51,7 @@ fun App() {
 //        SeatingSelectionScreen(onSeatingSelected = {}, onNextClick = {}, onCloseClick = {})
 //        ManualOrderScreen(onCloseClick = {})
 
-        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
+//        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
+        OrdersCalendarScreen(onBackClick = {})
     }
 }

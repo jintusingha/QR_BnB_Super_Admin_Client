@@ -15,25 +15,28 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
         }
     }
-    
+
     sourceSets {
         val commonMain by getting {
-            resources.srcDirs("src/commonMain/resources")}
+            resources.srcDirs("src/commonMain/resources")
+        }
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
             implementation("io.ktor:ktor-client-android:3.0.1")
+
+
         }
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
@@ -50,10 +53,10 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             implementation("org.jetbrains.compose.material:material-icons-extended:1.7.1")
 
+
             implementation(libs.koin.compose)
             implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc02")
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.0.0-rc02")
-
 
             // ktor dependencies
             implementation("io.ktor:ktor-client-core:3.0.1")
@@ -61,7 +64,7 @@ kotlin {
             implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
             implementation("io.ktor:ktor-client-logging:3.0.1")
             implementation("io.ktor:ktor-client-auth:3.0.1")
-
+            implementation("com.kizitonwose.calendar:compose:2.2.0")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.8.0-alpha10")
             implementation("com.patrykandpatrick.vico:compose-m3:1.13.1")
             implementation("io.coil-kt.coil3:coil-svg:3.0.0")
@@ -74,12 +77,21 @@ kotlin {
 
 android {
     namespace = "com.example.qrbnb_client"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "com.example.qrbnb_client"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
         versionName = "1.0"
     }
@@ -102,4 +114,3 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-

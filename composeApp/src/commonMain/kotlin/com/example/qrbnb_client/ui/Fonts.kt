@@ -31,6 +31,16 @@ fun style_18_23_700(): TextStyle =
         letterSpacing = 0.sp,
         textAlign = TextAlign.Center,
     )
+@Composable
+fun style_18_23_700_(): TextStyle =
+    TextStyle(
+        fontFamily = plusJakartaSans(),
+        fontWeight = FontWeight.W700,
+        fontSize = 18.sp,
+        lineHeight = 23.sp,
+        letterSpacing = 0.sp,
+        textAlign = TextAlign.Start,
+    )
 
 @Composable
 fun style_16_24_400(): TextStyle =
@@ -189,6 +199,16 @@ fun body16Regular(): TextStyle =
         fontWeight = FontWeight.W400,
         fontSize = 16.sp,
         lineHeight = 24.sp,
+        letterSpacing = 0.sp,
+        textAlign = TextAlign.Center,
+    )
+@Composable
+fun style_13_20_700_(): TextStyle =
+    TextStyle(
+        fontFamily = plusJakartaSans(),
+        fontWeight = FontWeight.W700,
+        fontSize = 13.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.sp,
         textAlign = TextAlign.Center,
     )
