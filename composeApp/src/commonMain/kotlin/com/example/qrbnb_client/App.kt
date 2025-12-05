@@ -17,6 +17,8 @@ import com.example.qrbnb_client.presentation.screen.ordersCalendarScreen.OrdersC
 
 import com.example.qrbnb_client.presentation.screen.ordersListScreen.OrdersListScreen
 import com.example.qrbnb_client.presentation.screen.seatingSelectionScreen.SeatingSelectionScreen
+
+import com.example.qrbnb_client.presentation.screen.stockScreen.EnterTodaysStockScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -52,6 +54,7 @@ fun App() {
 //        ManualOrderScreen(onCloseClick = {})
 
 //        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
-        OrdersCalendarScreen(onBackClick = {})
+//        OrdersCalendarScreen(onBackClick = {})
+        EnterTodaysStockScreen(onBackClick = {})
     }
 }
