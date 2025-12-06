@@ -6,8 +6,10 @@ import CheckoutScreen
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import com.example.qrbnb_client.navigation.AuthStatusChecker
+import com.example.qrbnb_client.presentation.screen.AddItemScreen
 import com.example.qrbnb_client.presentation.screen.ManualOrderScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
+import com.example.qrbnb_client.presentation.screen.ProcessingMenuScreen
 import com.example.qrbnb_client.presentation.screen.QrCodesScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
 
@@ -19,6 +21,7 @@ import com.example.qrbnb_client.presentation.screen.ordersListScreen.OrdersListS
 import com.example.qrbnb_client.presentation.screen.seatingSelectionScreen.SeatingSelectionScreen
 
 import com.example.qrbnb_client.presentation.screen.stockScreen.EnterTodaysStockScreen
+import com.example.qrbnb_client.presentation.screen.uploadMenuScreen.UploadMenuScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -55,6 +58,8 @@ fun App() {
 
 //        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
 //        OrdersCalendarScreen(onBackClick = {})
-        EnterTodaysStockScreen(onBackClick = {})
+//        EnterTodaysStockScreen(onBackClick = {})
+//        UploadMenuScreen()
+        ProcessingMenuScreen(onCancelClick = {})
     }
 }

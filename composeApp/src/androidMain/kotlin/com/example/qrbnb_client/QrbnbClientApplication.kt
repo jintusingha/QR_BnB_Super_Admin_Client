@@ -11,6 +11,7 @@ import com.example.qrbnb_client.di.AuthStatusChecker
 import com.example.qrbnb_client.di.ClientDashboardModule
 import com.example.qrbnb_client.di.CreateSeatingModule
 import com.example.qrbnb_client.di.EditTagModule
+
 import com.example.qrbnb_client.di.GenerateQrModule
 import com.example.qrbnb_client.di.ImagePickerModule
 import com.example.qrbnb_client.di.ImageUploadModule
@@ -33,9 +34,11 @@ import com.example.qrbnb_client.di.StockModule
 import com.example.qrbnb_client.di.SubmitFormModule
 import com.example.qrbnb_client.di.TagsModule
 import com.example.qrbnb_client.di.TokenModule
+import com.example.qrbnb_client.di.UploadMenuModule
 import com.example.qrbnb_client.di.UriHelperModule
 import com.example.qrbnb_client.di.VariantsModule
 import com.example.qrbnb_client.di.VerifyOtpModule
+import com.example.qrbnb_client.di.filePickerModule
 import com.example.qrbnb_client.di.networkModule
 import com.example.qrbnb_client.di.otpModule
 import io.ktor.http.ContentType
@@ -57,7 +60,8 @@ class QrbnbClientApplication : Application() {
                 OrderDetailsModule, AddModifierGroupModule,AddVariantModule, AddBadgeModule,
                 EditTagModule,ModifierGroupsModule, VariantsModule,AddItemModule,AddItemsModule,
                 ImagePickerModule, ImageUploadModule,UriHelperModule, SubmitFormModule,SeatingAreasModule,CreateSeatingModule,GenerateQrModule,SeatingDetailModule,OrderListModule,QrCodesModule,
-                QrImageDownloadModule,SeatingListingModule,ManualMenuModule,ManualOrderModule,OrdersByDateModule,StockModule
+                QrImageDownloadModule,SeatingListingModule,ManualMenuModule,ManualOrderModule,OrdersByDateModule,StockModule,filePickerModule,
+                UploadMenuModule
             )
         }
     }
