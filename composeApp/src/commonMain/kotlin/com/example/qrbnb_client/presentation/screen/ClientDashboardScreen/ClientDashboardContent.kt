@@ -16,17 +16,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.qrbnb_client.domain.entity.clientDashboardReponse.ClientDashboard
+import com.example.qrbnb_client.navigation.ScreenRoute
 import com.example.qrbnb_client.presentation.reusableComponents.StatCard
 import com.example.qrbnb_client.presentation.screen.clientdashboard.MenuManagementCard
 import com.example.qrbnb_client.ui.style_22_28_700
-
-
 
 @Composable
 fun ClientDashboardContent(
     data: ClientDashboard,
     paddingValues: PaddingValues,
+    onOrdersClick: () -> Unit,
+    onMenuManagementClick: (String) -> Unit,
 ) {
     Column(
         modifier =
@@ -36,7 +38,6 @@ fun ClientDashboardContent(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
     ) {
-        // Quick Stats Section
         Text(text = "Quick Stats", style = style_22_28_700())
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -68,7 +69,7 @@ fun ClientDashboardContent(
                 title = "Orders",
                 value = data.quickStats.ordersCount.toString(),
                 modifier = Modifier.weight(1f),
-                onClick = { /* Handle orders click */ },
+                onClick = onOrdersClick,
             )
             StatCard(
                 title = "Menu Active",
@@ -89,7 +90,9 @@ fun ClientDashboardContent(
                 description = menu.description,
                 actionLabel = menu.actionLabel,
                 iconUrl = menu.iconUrl,
-                onClick = { /* Handle action */ },
+                onClick = {
+                    onMenuManagementClick(menu.endpoint)
+                },
             )
             Spacer(modifier = Modifier.height(12.dp))
         }

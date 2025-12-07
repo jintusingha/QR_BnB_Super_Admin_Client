@@ -43,10 +43,15 @@ import qr_bnb_client.composeapp.generated.resources.person
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderDetailsScreen(
+    orderId: String,
     viewModel: OrderDetailsViewModel = koinInject(),
-    onBackClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(orderId) {
+        viewModel.loadOrder(orderId)
+    }
 
     Scaffold(
         topBar = {

@@ -41,7 +41,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.qrbnb_client.domain.entity.manageCategoryResponse.Category
+import com.example.qrbnb_client.navigation.ScreenRoute
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.ManageCategoryUiState
 import com.example.qrbnb_client.presentation.utility.formatDate
@@ -58,8 +61,9 @@ import qr_bnb_client.composeapp.generated.resources.hamburger
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManageCategoriesScreen(
+    onAddCategoryClick: () -> Unit,
+    onCategoryClick: (String) -> Unit,
     viewModel: ManageCategoryViewModel = koinInject(),
-    onAddCategoryClick: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -90,7 +94,7 @@ fun ManageCategoriesScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Handle add order action */ },
+                onClick = onAddCategoryClick,
                 containerColor = Color(0xFFF75C5C),
                 contentColor = Color.White,
                 shape = RoundedCornerShape(28.dp),
@@ -206,6 +210,9 @@ fun ManageCategoriesScreen(
                         items(categories) { category ->
                             CategoryListItem(
                                 category = category,
+                                onCategoryClick = { id ->
+                                    onCategoryClick(id)
+                                },
                                 onDeleteClick = {
                                     viewModel.deleteCategory(category.id)
 

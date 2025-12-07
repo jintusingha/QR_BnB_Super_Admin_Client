@@ -12,10 +12,6 @@ class OrderDetailsViewModel (private val getOrderDetailsUseCase: OrderDetailsUse
     private val _uiState = MutableStateFlow<OrderDetailsUiState>(OrderDetailsUiState.Loading)
     val uiState: StateFlow<OrderDetailsUiState> = _uiState
 
-    init{
-        loadOrder("1")
-    }
-
     fun loadOrder(orderId: String) {
         _uiState.value = OrderDetailsUiState.Loading
 

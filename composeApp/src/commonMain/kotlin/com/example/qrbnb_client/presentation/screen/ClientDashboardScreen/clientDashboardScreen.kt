@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import com.example.qrbnb_client.navigation.ScreenRoute
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.screen.ClientDashboardScreen.ClientDashboardContent
 import com.example.qrbnb_client.presentation.screen.ClientDashboardScreen.ClientDashboardError
@@ -39,7 +41,12 @@ import qr_bnb_client.composeapp.generated.resources.infoicon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClientDashboardScreen(viewModel: ClientDashboardViewModel = koinInject()) {
+fun ClientDashboardScreen(
+    onOrdersClick: () -> Unit,
+    onMenuManagementClick: (String) -> Unit,
+    onFabClick: () -> Unit,
+    viewModel: ClientDashboardViewModel = koinInject(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -70,9 +77,10 @@ fun ClientDashboardScreen(viewModel: ClientDashboardViewModel = koinInject()) {
                     }
                 },
             )
-        },floatingActionButton = {
+        },
+        floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Handle add order action */ },
+                onClick = onFabClick,
                 containerColor = Color(0xFFFF5252),
                 contentColor = Color.White,
                 shape = RoundedCornerShape(28.dp),
@@ -118,14 +126,18 @@ fun ClientDashboardScreen(viewModel: ClientDashboardViewModel = koinInject()) {
                 ClientDashboardError(
                     errorMessage = (state as ClientDashboardState.Error).message,
                     onRetry = viewModel::getDashboardData,
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
                 )
             }
 
             is ClientDashboardState.Success -> {
                 ClientDashboardContent(
                     data = (state as ClientDashboardState.Success).data,
-                    paddingValues = paddingValues
+                    paddingValues = paddingValues,
+                    onOrdersClick = { onOrdersClick() },
+                    onMenuManagementClick = { endpoint ->
+                        onMenuManagementClick(endpoint)
+                    },
                 )
             }
         }

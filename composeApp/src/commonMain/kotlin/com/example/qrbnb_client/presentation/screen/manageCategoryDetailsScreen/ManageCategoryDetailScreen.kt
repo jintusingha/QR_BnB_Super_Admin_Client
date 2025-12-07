@@ -19,7 +19,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.qrbnb_client.domain.entity.manageCategoryDetailsResponse.ManageCategoryDetails
+import com.example.qrbnb_client.navigation.ScreenRoute
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.ManageCategoryDetailsUiState
 import com.example.qrbnb_client.presentation.viewmodel.ManageCategoryDetailViewModel
@@ -40,6 +42,7 @@ import qr_bnb_client.composeapp.generated.resources.searchicon
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManageCategoryDetailScreen(
+
     categoryId: String,
     categoryName: String = "Manage Category",
     viewModel: ManageCategoryDetailViewModel = koinInject(),
@@ -71,7 +74,8 @@ fun ManageCategoryDetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddItemClick,
+                onClick = onAddItemClick
+                ,
                 containerColor = Color(0xFFF75C5C),
                 contentColor = Color.White,
                 shape = RoundedCornerShape(28.dp),

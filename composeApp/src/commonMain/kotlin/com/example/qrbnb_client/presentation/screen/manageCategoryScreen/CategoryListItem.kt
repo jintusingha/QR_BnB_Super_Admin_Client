@@ -1,5 +1,6 @@
 package com.example.qrbnb_client.presentation.screen.manageCategoryScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import com.example.qrbnb_client.ui.style_16_24_500
 @Composable
 fun CategoryListItem(
     category: Category,
+    onCategoryClick: (String) -> Unit,
     onDeleteClick: () -> Unit,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -46,6 +48,7 @@ fun CategoryListItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onCategoryClick(category.id) }
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,

@@ -43,7 +43,7 @@ fun TagsScreen(
         topBar = {
             CustomTopAppBar(title = "Tags",
                 navigationIcon ={
-                    IconButton(onClick = {}){
+                    IconButton(onClick = {onBackClick()}){
                         Icon(
                             painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "Back",

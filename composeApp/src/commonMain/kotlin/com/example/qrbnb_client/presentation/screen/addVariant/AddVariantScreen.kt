@@ -62,7 +62,7 @@ fun AddVariantScreen(
             CustomTopAppBar(
                 title = "Add Variant",
                 navigationIcon = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {onBack()}) {
                         Icon(
                             painter = painterResource(Res.drawable.leftArrowIcon),
                             contentDescription = "Back",

@@ -40,7 +40,7 @@ fun AddBadgeScreen(
     Scaffold(
         topBar = {
             CustomTopAppBar(title = "Add Badge", navigationIcon = {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {onBackClick()}) {
                     Icon(
                         painter = painterResource(Res.drawable.leftArrowIcon),
                         "left arrow icon",
