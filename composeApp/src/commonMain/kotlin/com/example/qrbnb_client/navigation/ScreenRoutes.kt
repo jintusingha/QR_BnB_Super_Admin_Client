@@ -44,9 +44,17 @@ sealed class ScreenRoute(
     object OrderDetails : ScreenRoute("order_details/{orderId}") {
         fun createRoute(orderId: String) = "order_details/$orderId"
     }
+
     object SeatingSelection : ScreenRoute("seating_selection_route")
+
     object ManualOrder : ScreenRoute("manual_order_route")
+
     object Checkout : ScreenRoute("checkout_route")
 
-
+    object EditTag : ScreenRoute("edit_tag_route/{tagId}/{tagName}") {
+        fun createRoute(
+            tagId: String,
+            tagName: String,
+        ): String = "edit_tag_route/$tagId/$tagName"
+    }
 }

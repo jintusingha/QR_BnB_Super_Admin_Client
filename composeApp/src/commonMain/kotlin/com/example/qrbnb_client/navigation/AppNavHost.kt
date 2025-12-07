@@ -18,6 +18,7 @@ import com.example.qrbnb_client.presentation.screen.OtpScreen
 import com.example.qrbnb_client.presentation.screen.OtpVerificationScreen
 import com.example.qrbnb_client.presentation.screen.addBadgeScreen.AddBadgeScreen
 import com.example.qrbnb_client.presentation.screen.addCategoryScreen.AddCategoryScreen
+import com.example.qrbnb_client.presentation.screen.editTagScreen.EditTagScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryDetailsScreen.ManageCategoryDetailScreen
 import com.example.qrbnb_client.presentation.screen.manageCategoryScreen.ManageCategoriesScreen
 import com.example.qrbnb_client.presentation.screen.modifierGroupsScreen.ModifierGroupsScreen
@@ -151,8 +152,18 @@ fun AppNavHost(authStatusChecker: AuthStatusChecker) {
         composable(ScreenRoute.AddTag.route) {
             TagsScreen(
                 onBackClick = { navController.popBackStack() },
+                onTagClick = { tag ->
+
+                    navController.navigate(
+                        ScreenRoute.EditTag.createRoute(
+                            tag.id,
+                            tag.name,
+                        ),
+                    )
+                },
             )
         }
+
         composable(ScreenRoute.ManageModifierGroups.route) {
             ModifierGroupsScreen(
                 onBackClick = { navController.popBackStack() },
@@ -230,6 +241,26 @@ fun AppNavHost(authStatusChecker: AuthStatusChecker) {
                         popUpTo(ScreenRoute.ClientDashboard.route)
                     }
                 },
+            )
+        }
+        composable(
+            route = ScreenRoute.EditTag.route,
+            arguments =
+                listOf(
+                    navArgument("tagId") { type = NavType.StringType },
+                    navArgument("tagName") { type = NavType.StringType },
+                ),
+        ) { backStackEntry ->
+
+            val tagId = backStackEntry.arguments?.getString("tagId") ?: ""
+            val tagName = backStackEntry.arguments?.getString("tagName") ?: ""
+
+            EditTagScreen(
+                tagId = tagId,
+                tagName = tagName,
+                onBack = { navController.popBackStack() },
+                onCancel = { navController.popBackStack() },
+                onDelete = { navController.popBackStack() },
             )
         }
     }

@@ -40,8 +40,8 @@ import org.koin.compose.koinInject
 fun App() {
     MaterialTheme {
 //        OtpScreen()
-//        val authStatusChecker= koinInject<AuthStatusChecker>()
-//        AppNavHost(authStatusChecker)
+        val authStatusChecker= koinInject<AuthStatusChecker>()
+        AppNavHost(authStatusChecker)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
 //        AddCategoryScreen()
@@ -53,7 +53,7 @@ fun App() {
 //        AddModifierGroupScreen(onBackClick  = {})
 //        AddVariantScreen(onBack = {}, onSuccess = {})
 //        AddBadgeScreen(onBackClick = {})
-        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
+//        EditTagScreen(tagId = "1","food", onBack = {}, onCancel = {}, onDelete = {})
 //        ModifierGroupsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})
 
 //        VariantsScreen(onBackClick = {}, onAddGroupClick = {}, onEditGroupClick = {})

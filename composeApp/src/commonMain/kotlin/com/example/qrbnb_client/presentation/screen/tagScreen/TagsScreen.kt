@@ -1,6 +1,7 @@
 package com.example.qrbnb_client.presentation.screen.tagScreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,6 +36,7 @@ import qr_bnb_client.composeapp.generated.resources.leftArrowIcon
 fun TagsScreen(
     viewModel: TagViewModel= koinInject(),
     onBackClick: () -> Unit,
+    onTagClick: (TagEntity) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var newTagText by remember { mutableStateOf("") }
@@ -98,7 +100,12 @@ fun TagsScreen(
                         modifier = Modifier.padding(bottom = 24.dp),
                     ) {
                         items(tags) { tag ->
-                            TagChip(tagName = tag.name)
+                            TagChip(
+                                tag = tag,
+                                onClick = { selectedTag ->
+                                    onTagClick(selectedTag)
+                                }
+                            )
                         }
                     }
                 }
@@ -188,19 +195,24 @@ fun TagsScreen(
 }
 
 @Composable
-fun TagChip(tagName: String) {
+
+fun TagChip(
+    tag: TagEntity,
+    onClick: (TagEntity) -> Unit
+){
     Row(
         modifier = Modifier
             .height(32.dp)
             .defaultMinSize(minWidth = 122.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(Color(0xFFF5F0F0)),
+            .background(Color(0xFFF5F0F0))
+        .clickable { onClick(tag) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(16.dp))
 
         Text(
-            text = tagName,
+            text =tag.name,
             fontSize = 14.sp,
             color = Color.Black
         )
