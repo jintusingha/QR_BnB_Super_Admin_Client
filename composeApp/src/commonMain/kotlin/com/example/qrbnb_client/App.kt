@@ -39,8 +39,8 @@ import org.koin.compose.koinInject
 fun App() {
     MaterialTheme {
 //        OtpScreen()
-        val authStatusChecker= koinInject<AuthStatusChecker>()
-        AppNavHost(authStatusChecker)
+//        val authStatusChecker= koinInject<AuthStatusChecker>()
+//        AppNavHost(authStatusChecker)
 //        ClientDashboardScreen()
 //        ManageCategoriesScreen {  }
 //        AddCategoryScreen()
@@ -67,7 +67,7 @@ fun App() {
 //        SeatingSelectionScreen(onSeatingSelected = {}, onNextClick = {}, onCloseClick = {})
 //        ManualOrderScreen(onCloseClick = {})
 
-//        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
+        CheckoutScreen(onCloseClick = {}, onOrderSuccess = {orderId, orderNumber -> {}})
 //        OrdersCalendarScreen(onBackClick = {})
 //        EnterTodaysStockScreen(onBackClick = {})
 //        UploadMenuScreen()
