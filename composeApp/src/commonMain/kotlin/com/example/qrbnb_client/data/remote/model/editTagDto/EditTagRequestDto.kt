@@ -1,6 +1,8 @@
 package com.example.qrbnb_client.data.remote.model.editTagDto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class EditTagRequestDto(
-    val tagId:String,
-    val newName:String
+    val name: String
 )

@@ -6,10 +6,11 @@ import com.example.qrbnb_client.data.repository.EditTagRepositoryImpl
 import com.example.qrbnb_client.domain.repository.EditTagRepository
 import com.example.qrbnb_client.domain.usecase.EditTagUseCase
 import com.example.qrbnb_client.presentation.viewmodel.EditTagViewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val EditTagModule=module{
-    single<EditTagRemoteDataSource>{ EditTagRemoteDataSourceImpl() }
+    single<EditTagRemoteDataSource>{ EditTagRemoteDataSourceImpl(get(named("BASE_URL")),get(POST_LOGIN_CLIENT)) }
     single<EditTagRepository>{ EditTagRepositoryImpl(get()) }
     factory{
         EditTagUseCase(get())

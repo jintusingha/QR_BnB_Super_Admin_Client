@@ -15,6 +15,7 @@ import com.example.qrbnb_client.data.remote.model.manualOrderDtos.manulOrderRequ
 import com.example.qrbnb_client.data.remote.model.manualOrderDtos.manulOrderRequestDto.ManualOrderRequestDto
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
 import com.example.qrbnb_client.presentation.state.ManualOrderUiState
+import com.example.qrbnb_client.presentation.utility.CartStore
 import com.example.qrbnb_client.presentation.viewmodel.ManualOrderViewModel
 import com.example.qrbnb_client.ui.SoftBrown
 import com.example.qrbnb_client.ui.style_14_21_400
@@ -42,14 +43,11 @@ fun CheckoutScreen(
     var customerPhone by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
 
-    val fakeSeatingAreaId = "UUID-SEATING"
-    val fakeItems =
-        remember {
-            listOf(
-                ManualOrderItemDto(itemId = "UUID-ITEM-1", quantity = 2),
-                ManualOrderItemDto(itemId = "UUID-ITEM-2", quantity = 1),
-            )
-        }
+    val seatingId = CartStore.seatingId
+    val items = CartStore.quantities.map { (itemId, qty) ->
+        ManualOrderItemDto(itemId = itemId, quantity = qty)
+    }
+
 
     LaunchedEffect(uiState) {
         if (uiState is ManualOrderUiState.Success) {
@@ -246,15 +244,16 @@ fun CheckoutScreen(
 
                     Button(
                         onClick = {
-                            val request =
-                                ManualOrderRequestDto(
-                                    seatingAreaId = fakeSeatingAreaId,
-                                    customerName = customerName.ifBlank { null },
-                                    customerPhone = customerPhone.ifBlank { null },
-                                    notes = notes.ifBlank { null },
-                                    items = fakeItems,
-                                )
+                            val request = ManualOrderRequestDto(
+                                seatingAreaId = seatingId ?: "",
+                                customerName = customerName.ifBlank { null },
+                                customerPhone = customerPhone.ifBlank { null },
+                                notes = notes.ifBlank { null },
+                                items = items
+                            )
+
                             viewModel.createOrder(request)
+
                         },
                         modifier =
                             Modifier

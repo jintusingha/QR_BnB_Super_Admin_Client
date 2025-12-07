@@ -45,6 +45,7 @@ import qr_bnb_client.composeapp.generated.resources.searchicon
 fun ManualOrderScreen(
     viewModel: MenuViewModel = koinInject(),
     onCloseClick: () -> Unit,
+    onProceedToCheckout: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -84,8 +85,10 @@ fun ManualOrderScreen(
             is MenuClientUiState.Success -> {
                 MenuContent(
                     menu = state.menu,
+                    onProceedToCheckout = onProceedToCheckout,
                     modifier = Modifier.padding(paddingValues),
                 )
+
             }
             is MenuClientUiState.Error -> {
                 Box(
@@ -109,6 +112,7 @@ fun ManualOrderScreen(
 @Composable
 private fun MenuContent(
     menu: MenuEntity,
+    onProceedToCheckout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedCategory by remember { mutableStateOf(menu.categories.firstOrNull()?.id ?: "") }
@@ -168,6 +172,7 @@ private fun MenuContent(
         if (hasItemsInCart) {
             Button(
                 onClick = {
+                    onProceedToCheckout()
 
                 },
                 modifier =

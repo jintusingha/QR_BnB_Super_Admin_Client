@@ -216,6 +216,20 @@ fun AppNavHost(authStatusChecker: AuthStatusChecker) {
         composable(ScreenRoute.ManualOrder.route) {
             ManualOrderScreen(
                 onCloseClick = { navController.popBackStack() },
+                onProceedToCheckout = {
+                    navController.navigate(ScreenRoute.Checkout.route)
+                },
+            )
+        }
+        composable(ScreenRoute.Checkout.route) {
+            CheckoutScreen(
+                onCloseClick = { navController.popBackStack() },
+                onOrderSuccess = { orderId, orderNumber ->
+
+                    navController.navigate(ScreenRoute.ClientDashboard.route) {
+                        popUpTo(ScreenRoute.ClientDashboard.route)
+                    }
+                },
             )
         }
     }

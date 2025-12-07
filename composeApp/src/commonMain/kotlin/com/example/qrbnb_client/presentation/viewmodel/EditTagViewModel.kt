@@ -48,17 +48,14 @@ class EditTagViewModel(
                     )
 
                 val response = editTagUseCase(entity)
+                println(response)
 
                 if (response.success) {
-                    println("TAG UPDATED SUCCESSFULLY: ${response.message}")
-                    _uiState.value =
-                        EditTagUiState.Data(
-                            tagId = current.tagId,
-                            tagName = "",
-                        )
+                    _uiState.value = EditTagUiState.Success("Tag updated successfully")
                 } else {
-                    _uiState.value = EditTagUiState.Error(response.message)
+                    _uiState.value = EditTagUiState.Error("Update failed")
                 }
+
             } catch (e: Exception) {
                 _uiState.value = EditTagUiState.Error(e.message ?: "Unknown error")
             }

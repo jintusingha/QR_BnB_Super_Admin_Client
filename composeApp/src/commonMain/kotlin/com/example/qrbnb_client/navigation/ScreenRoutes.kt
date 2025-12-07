@@ -46,6 +46,7 @@ sealed class ScreenRoute(
     }
     object SeatingSelection : ScreenRoute("seating_selection_route")
     object ManualOrder : ScreenRoute("manual_order_route")
+    object Checkout : ScreenRoute("checkout_route")
 
 
 }

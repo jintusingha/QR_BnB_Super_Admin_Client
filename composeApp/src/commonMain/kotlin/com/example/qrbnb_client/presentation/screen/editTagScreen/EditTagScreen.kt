@@ -63,27 +63,34 @@ fun EditTagScreen(
         when (val state = uiState) {
             is EditTagUiState.Loading -> {
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
                 ) { CircularProgressIndicator() }
             }
 
             is EditTagUiState.Error -> {
                 Box(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
                 ) { Text(state.message, color = Color.Red) }
             }
 
-            is EditTagUiState.Data -> {
+            is EditTagUiState.Data,
+            is EditTagUiState.Success -> {
+                val tagName = when (state) {
+                    is EditTagUiState.Data -> state.tagName
+                    is EditTagUiState.Success -> viewModel.uiState.value.let {
+                        (it as? EditTagUiState.Data)?.tagName ?: ""
+                    }
+                    else -> ""
+                }
+
                 EditTagContent(
-                    tagName = state.tagName,
+                    tagName = tagName,
                     onTagNameChanged = { viewModel.onTagNameChanged(it) },
                     onSaveClick = { viewModel.saveTag() },
                     onDeleteClick = onDelete,
@@ -91,9 +98,8 @@ fun EditTagScreen(
                     modifier = Modifier.padding(paddingValues),
                 )
             }
-
-            is EditTagUiState.Success -> Unit
         }
+
     }
 }
 

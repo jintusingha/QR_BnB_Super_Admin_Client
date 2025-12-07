@@ -4,5 +4,5 @@ import com.example.qrbnb_client.data.remote.model.editTagDto.EditTagRequestDto
 import com.example.qrbnb_client.data.remote.model.editTagDto.EditTagResponseDto
 
 interface EditTagRemoteDataSource {
-    suspend fun editTag(request: EditTagRequestDto): EditTagResponseDto
+    suspend fun editTag(request: EditTagRequestDto, tagId: String): EditTagResponseDto
 }

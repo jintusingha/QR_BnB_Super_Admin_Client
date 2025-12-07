@@ -2,18 +2,36 @@ package com.example.qrbnb_client.data.remote.service.editTagRemoteDatasource
 
 import com.example.qrbnb_client.data.remote.model.editTagDto.EditTagRequestDto
 import com.example.qrbnb_client.data.remote.model.editTagDto.EditTagResponseDto
-import kotlinx.coroutines.delay
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.patch
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 
-class EditTagRemoteDataSourceImpl : EditTagRemoteDataSource {
+class EditTagRemoteDataSourceImpl(
+    private val baseUrl: String,
+    private val httpClient: HttpClient,
+) : EditTagRemoteDataSource {
+    override suspend fun editTag(
+        request: EditTagRequestDto,
+        tagId: String,
+    ): EditTagResponseDto {
+        try {
+            val url = "$baseUrl/client/menu/config/tags/$tagId"
 
-    override suspend fun editTag(request: EditTagRequestDto): EditTagResponseDto {
-        delay(1000)
+            val response =
+                httpClient.patch(url) {
+                    contentType(ContentType.Application.Json)
+                    setBody(request)
+                }
 
-        println("FAKE API:  id=${request.tagId}, newName=${request.newName}")
+            val raw = response.bodyAsText()
 
-        return EditTagResponseDto(
-            success = true,
-            message = "Tag updated successfully!"
-        )
+            return response.body()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
