@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.example.qrbnb_client.domain.entity.seatingEntity.SeatingEntity
 import com.example.qrbnb_client.presentation.reusableComponents.CustomTopAppBar
+import com.example.qrbnb_client.presentation.utility.CartStore
 import com.example.qrbnb_client.presentation.viewmodel.SeatingViewModel
 import com.example.qrbnb_client.ui.SoftBrown
 import com.example.qrbnb_client.ui.style_14_21_400
@@ -164,6 +165,10 @@ fun SeatingSelectionScreen(
                                     isSelected = selectedSeating?.id == seating.id,
                                     onClick = {
                                         selectedSeating = seating
+
+                                        CartStore.seatingId = seating.id
+                                        println("Selected seating stored in CartStore ${CartStore.seatingId}")
+
                                         onSeatingSelected(seating)
                                     },
                                 )
@@ -195,7 +200,7 @@ fun SeatingSelectionScreen(
             ) {
                 Text(
                     text = "Next",
-                    style= style_16_24_700(),
+                    style = style_16_24_700(),
                     color = Color.White,
                 )
             }

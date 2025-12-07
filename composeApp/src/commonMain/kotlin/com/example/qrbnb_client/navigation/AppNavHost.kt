@@ -11,6 +11,7 @@ import com.example.qrbnb_client.presentation.screen.AddItemScreen
 import com.example.qrbnb_client.presentation.screen.AddModifierGroupScreen
 import com.example.qrbnb_client.presentation.screen.AddVariantScreen
 import com.example.qrbnb_client.presentation.screen.DynamicAddItemScreen
+import com.example.qrbnb_client.presentation.screen.ManualOrderScreen
 import com.example.qrbnb_client.presentation.screen.MenuConfigurationScreen
 import com.example.qrbnb_client.presentation.screen.OrdersScreen
 import com.example.qrbnb_client.presentation.screen.OtpScreen
@@ -206,9 +207,15 @@ fun AppNavHost(authStatusChecker: AuthStatusChecker) {
             SeatingSelectionScreen(
                 onCloseClick = { navController.popBackStack() },
                 onNextClick = {
+                    navController.navigate(ScreenRoute.ManualOrder.route)
                 },
                 onSeatingSelected = { seating ->
                 },
+            )
+        }
+        composable(ScreenRoute.ManualOrder.route) {
+            ManualOrderScreen(
+                onCloseClick = { navController.popBackStack() },
             )
         }
     }

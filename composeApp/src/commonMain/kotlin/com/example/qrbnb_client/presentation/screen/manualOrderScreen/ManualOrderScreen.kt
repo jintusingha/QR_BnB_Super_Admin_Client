@@ -19,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import coil3.compose.AsyncImage
 import com.example.qrbnb_client.domain.entity.menuEntity.MenuCategoryEntity
 import com.example.qrbnb_client.domain.entity.menuEntity.MenuEntity
@@ -35,6 +34,7 @@ import com.example.qrbnb_client.ui.style_14_21_700
 import com.example.qrbnb_client.ui.style_16_20_700
 import com.example.qrbnb_client.ui.style_16_24_400
 import com.example.qrbnb_client.ui.style_16_24_400_
+import com.example.qrbnb_client.ui.style_16_24_700
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import qr_bnb_client.composeapp.generated.resources.Res
@@ -43,13 +43,12 @@ import qr_bnb_client.composeapp.generated.resources.searchicon
 
 @Composable
 fun ManualOrderScreen(
-    viewModel: MenuViewModel= koinInject(),
-    onCloseClick: () -> Unit
+    viewModel: MenuViewModel = koinInject(),
+    onCloseClick: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        CartStore.seatingId = "TEST-SEATING-ID-001"// FAKE SEATING ID FOR NOW WILL REPLACE WEHEN CONNECTING NAVIGATION
         viewModel.loadMenu()
     }
 
@@ -73,10 +72,11 @@ fun ManualOrderScreen(
         when (val state = uiState) {
             is MenuClientUiState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
@@ -84,20 +84,21 @@ fun ManualOrderScreen(
             is MenuClientUiState.Success -> {
                 MenuContent(
                     menu = state.menu,
-                    modifier = Modifier.padding(paddingValues)
+                    modifier = Modifier.padding(paddingValues),
                 )
             }
             is MenuClientUiState.Error -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = state.message,
                         color = Color.Red,
-                        fontSize = 16.sp
+                        fontSize = 16.sp,
                     )
                 }
             }
@@ -108,57 +109,86 @@ fun ManualOrderScreen(
 @Composable
 private fun MenuContent(
     menu: MenuEntity,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var selectedCategory by remember { mutableStateOf(menu.categories.firstOrNull()?.id ?: "") }
     var searchQuery by remember { mutableStateOf("") }
     val itemQuantities = remember { mutableStateMapOf<String, Int>() }
+    val hasItemsInCart by remember { derivedStateOf { itemQuantities.isNotEmpty() } }
 
-    Column(
-        modifier = modifier.fillMaxSize()
+    Box(
+        modifier = modifier.fillMaxSize(),
     ) {
-
-        SearchBar(
-            query = searchQuery,
-            onQueryChange = { searchQuery = it },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        )
-
-
-        CategoryTabs(
-            categories = menu.categories,
-            selectedCategory = selectedCategory,
-            onCategorySelected = { selectedCategory = it },
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
-
-        val filteredItems = menu.items.filter { item ->
-            item.categoryId == selectedCategory &&
-                    (searchQuery.isEmpty() || item.name.contains(searchQuery, ignoreCase = true))
-        }
-
-        LazyColumn(
+        Column(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(filteredItems) { item ->
-                MenuItem(
-                    item = item,
-                    quantity = itemQuantities[item.id] ?: 1,
-                    onQuantityChange = { newQuantity ->
+            SearchBar(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            )
 
+            CategoryTabs(
+                categories = menu.categories,
+                selectedCategory = selectedCategory,
+                onCategorySelected = { selectedCategory = it },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            )
 
-                        itemQuantities[item.id] = newQuantity
+            val filteredItems =
+                menu.items.filter { item ->
+                    item.categoryId == selectedCategory &&
+                            (searchQuery.isEmpty() || item.name.contains(searchQuery, ignoreCase = true))
+                }
 
-
-                        CartStore.updateItem(item.id, newQuantity)
-                    }
-                )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 16.dp, bottom = if (hasItemsInCart) 88.dp else 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                items(filteredItems) { item ->
+                    MenuItem(
+                        item = item,
+                        quantity = itemQuantities[item.id] ?: 1,
+                        onQuantityChange = { newQuantity ->
+                            if (newQuantity > 0) {
+                                itemQuantities[item.id] = newQuantity
+                                CartStore.updateItem(item.id, newQuantity)
+                            } else {
+                                itemQuantities.remove(item.id)
+                                CartStore.updateItem(item.id, 0)
+                            }
+                        },
+                    )
+                }
             }
         }
 
+
+        if (hasItemsInCart) {
+            Button(
+                onClick = {
+
+                },
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .height(56.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFF5757),
+                    ),
+                shape = RoundedCornerShape(8.dp),
+            ) {
+                Text(
+                    text = "Proceed to Checkout",
+                    style = style_16_24_700(),
+                    color = Color.White,
+                )
+            }
+        }
     }
 }
 
@@ -166,14 +196,15 @@ private fun MenuContent(
 private fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(56.dp),
         leadingIcon = {
             Icon(
                 painter = painterResource(Res.drawable.searchicon),
@@ -192,12 +223,13 @@ private fun SearchBar(
         },
         shape = RoundedCornerShape(12.dp),
         singleLine = true,
-        colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = Color(0xFFF5F0F0),
-            focusedContainerColor = Color(0xFFF5F0F0),
-            unfocusedBorderColor = Color.Transparent,
-            focusedBorderColor = Color.Transparent,
-        )
+        colors =
+            OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor = Color(0xFFF5F0F0),
+                focusedContainerColor = Color(0xFFF5F0F0),
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+            ),
     )
 }
 
@@ -206,18 +238,19 @@ private fun CategoryTabs(
     categories: List<MenuCategoryEntity>,
     selectedCategory: String,
     onCategorySelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyRow(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         items(categories) { category ->
             CategoryTab(
                 category = category,
                 isSelected = category.id == selectedCategory,
-                onClick = { onCategorySelected(category.id) }
+                onClick = { onCategorySelected(category.id) },
             )
         }
     }
@@ -227,30 +260,33 @@ private fun CategoryTabs(
 private fun CategoryTab(
     category: MenuCategoryEntity,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Text(
         text = category.name,
-        modifier = Modifier
-            .clip(RoundedCornerShape(4.dp))
-            .clickable(onClick = onClick)
-            .background(if (isSelected) Color.Transparent else Color.Transparent)
-            .padding(bottom = 4.dp)
-            .then(
-                if (isSelected) {
-                    Modifier.drawWithContent {
-                        drawContent()
-                        drawLine(
-                            color = Color.Gray,
-                            start = Offset(0f, size.height),
-                            end = Offset(size.width, size.height),
-                            strokeWidth = 2.dp.toPx()
-                        )
-                    }
-                } else Modifier
-            ),
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(4.dp))
+                .clickable(onClick = onClick)
+                .background(if (isSelected) Color.Transparent else Color.Transparent)
+                .padding(bottom = 4.dp)
+                .then(
+                    if (isSelected) {
+                        Modifier.drawWithContent {
+                            drawContent()
+                            drawLine(
+                                color = Color.Gray,
+                                start = Offset(0f, size.height),
+                                end = Offset(size.width, size.height),
+                                strokeWidth = 2.dp.toPx(),
+                            )
+                        }
+                    } else {
+                        Modifier
+                    },
+                ),
         color = if (isSelected) Color.Black else SoftBrown,
-        style= style_14_21_700()
+        style = style_14_21_700(),
     )
 }
 
@@ -258,54 +294,55 @@ private fun CategoryTab(
 private fun MenuItem(
     item: MenuItemEntity,
     quantity: Int,
-    onQuantityChange: (Int) -> Unit
+    onQuantityChange: (Int) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    text = item.categoryId.take(n=10),
-                    style= style_14_21_400(),
-                    color=SoftBrown
+                    text = item.categoryId.take(n = 10),
+                    style = style_14_21_400(),
+                    color = SoftBrown,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = item.name,
                     color = Color.Black,
-                    style= style_16_20_700()
+                    style = style_16_20_700(),
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "$${String.format("%.2f", item.price)}",
-                    style=style_14_21_400(),
-                    color=SoftBrown
+                    style = style_14_21_400(),
+                    color = SoftBrown,
                 )
             }
 
             AsyncImage(
                 model = item.imageUrl,
                 contentDescription = item.name,
-                modifier = Modifier
-                    .size(120.dp, 80.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
+                modifier =
+                    Modifier
+                        .size(120.dp, 80.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
             )
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Quantity Controls
+
         QuantityControl(
             quantity = quantity,
-            onQuantityChange = onQuantityChange
+            onQuantityChange = onQuantityChange,
         )
     }
 }
@@ -313,31 +350,31 @@ private fun MenuItem(
 @Composable
 private fun QuantityControl(
     quantity: Int,
-    onQuantityChange: (Int) -> Unit
+    onQuantityChange: (Int) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "Quantity",
-            style= style_16_24_400_(),
-            color= Black,
-            modifier = Modifier.weight(1f)
+            style = style_16_24_400_(),
+            color = Black,
+            modifier = Modifier.weight(1f),
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             IconButton(
                 onClick = { if (quantity > 1) onQuantityChange(quantity - 1) },
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp),
             ) {
                 Text(
                     text = "−",
                     fontSize = 20.sp,
-                    color = Color(0xFF757575)
+                    color = Color(0xFF757575),
                 )
             }
 
@@ -345,17 +382,17 @@ private fun QuantityControl(
                 text = quantity.toString(),
                 fontSize = 16.sp,
                 color = Color.Black,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
 
             IconButton(
                 onClick = { onQuantityChange(quantity + 1) },
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(32.dp),
             ) {
                 Text(
                     text = "+",
                     fontSize = 20.sp,
-                    color = Color(0xFF757575)
+                    color = Color(0xFF757575),
                 )
             }
         }

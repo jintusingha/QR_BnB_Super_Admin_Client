@@ -45,5 +45,7 @@ sealed class ScreenRoute(
         fun createRoute(orderId: String) = "order_details/$orderId"
     }
     object SeatingSelection : ScreenRoute("seating_selection_route")
+    object ManualOrder : ScreenRoute("manual_order_route")
+
 
 }
